@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>Sachin Kumar Portfolio</title>
+<title>Sachin Kumar | Developer</title>
 
 <style>
 
@@ -11,76 +11,91 @@ scroll-behavior:smooth;
 }
 
 body{
-font-family: Arial;
+font-family:Arial;
 background:#0f172a;
 color:white;
 margin:0;
 text-align:center;
 }
 
+/* hero */
+
 header{
 background:#020617;
-padding:20px;
+padding:40px;
 }
 
 h1{
 color:#38bdf8;
+font-size:42px;
 }
 
-nav{
-margin-top:10px;
+/* typing animation */
+
+.typing{
+font-size:20px;
+color:#22c55e;
+border-right:3px solid white;
+width:fit-content;
+margin:auto;
+white-space:nowrap;
+overflow:hidden;
+animation:typing 4s steps(30,end) infinite alternate;
 }
 
-</style>
-
-</head>
-
-font-family: Arial;
-background:#0f172a;
-color:white;
-margin:0;
-text-align:center;
+@keyframes typing{
+from{width:0}
+to{width:250px}
 }
 
-header{
-background:#020617;
-padding:20px;
-}
-
-h1{
-color:#38bdf8;
-}
-
-nav{
-margin-top:10px;
-}
+/* menu */
 
 nav a{
 color:white;
-margin:10px;
+margin:12px;
 text-decoration:none;
 font-size:18px;
 }
 
+/* sections */
+
 .section{
-padding:60px 20px;
+padding:80px 20px;
+animation:fadeUp 1s ease;
 }
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* card */
 
 .box{
 background:#1e293b;
-padding:20px;
+padding:25px;
 border-radius:10px;
-width:300px;
+width:320px;
 margin:auto;
 }
 
+/* image */
+
 img{
-width:120px;
-height:120px;
+width:140px;
+height:140px;
 border-radius:50%;
-border:3px solid #38bdf8;
-margin-bottom:10px;
+border:4px solid #38bdf8;
+box-shadow:0 0 20px #38bdf8;
 }
+
+/* buttons */
 
 button{
 background:#38bdf8;
@@ -88,7 +103,33 @@ border:none;
 padding:10px 20px;
 border-radius:6px;
 cursor:pointer;
-margin:5px;
+margin:6px;
+}
+
+/* side brand */
+
+.brand{
+position:fixed;
+right:-90px;
+top:50%;
+transform:rotate(-90deg);
+font-size:22px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+/* floating whatsapp */
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#22c55e;
+color:white;
+padding:12px 18px;
+border-radius:30px;
+text-decoration:none;
+font-size:16px;
 }
 
 </style>
@@ -97,10 +138,15 @@ margin:5px;
 
 <body>
 
+<div class="brand">SK Technology Solutions ™</div>
+
 <header>
 
 <h1>Sachin Kumar</h1>
-<p>Aspiring Software Developer 🚀</p>
+
+<div class="typing">
+Developer | Programmer | Creator
+</div>
 
 <nav>
 <a href="#about">About</a>
@@ -110,7 +156,6 @@ margin:5px;
 </nav>
 
 </header>
-
 
 <div class="section" id="about">
 
@@ -122,51 +167,45 @@ margin:5px;
 
 <p>
 Hello, I am Sachin Kumar.  
-I am learning coding and web development.
+I am learning coding and building web projects.
 </p>
 
 </div>
 
 </div>
 
-
 <div class="section" id="skills">
 
-<h2>My Skills</h2>
+<h2>Skills</h2>
 
 <p>✔ HTML</p>
 <p>✔ CSS</p>
 <p>✔ Python</p>
 <p>✔ C++</p>
-<p>✔ JavaScript (Learning)</p>
+<p>✔ JavaScript</p>
 
 </div>
-
 
 <div class="section" id="projects">
 
 <h2>Projects</h2>
 
-<p>✔ Personal Portfolio Website</p>
+<p>✔ Portfolio Website</p>
 <p>✔ To‑Do List Web App</p>
 <p>✔ Quiz App</p>
 
 </div>
 
-
 <div class="section" id="contact">
 
-<h2>Contact Me</h2>
+<h2>Contact</h2>
 
-<p>📞 Phone: 7991352092</p>
-<p>📧 Email: sktechnovaworld@gmail.com</p>
+<p>📞 7991352092</p>
+
+<p>📧 sktechnovaworld@gmail.com</p>
 
 <a href="mailto:sktechnovaworld@gmail.com">
 <button>Email</button>
-</a>
-
-<a href="https://wa.me/917991352092">
-<button>WhatsApp</button>
 </a>
 
 <a href="https://youtube.com/@sachinexplainsofficial">
@@ -186,6 +225,10 @@ I am learning coding and web development.
 </a>
 
 </div>
+
+<a class="whatsapp" href="https://wa.me/917991352092">
+WhatsApp
+</a>
 
 </body>
 </html>
