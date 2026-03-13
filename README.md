@@ -1,1 +1,1 @@
-# sktechnovaworld.github.in
+# sktechnovaworld.github.io
