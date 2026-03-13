@@ -5,6 +5,36 @@
 
 <style>
 
+html{
+scroll-behavior:smooth;
+}
+
+.section{
+padding:80px 20px;
+opacity:0;
+transform:translateY(50px);
+animation:fadeUp 1s ease forwards;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+body{
+font-family: Arial;
+background:#0f172a;
+color:white;
+}
+
+</style>
+
 body{
 font-family: Arial;
 background:#0f172a;
