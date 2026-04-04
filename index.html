@@ -3,103 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK ZenvyDeals</title>
+    <title>skzenvyDeals | Amazon Style Affiliate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --amazon-dark: #131921; --amazon-yellow: #ff9900; }
-        body { font-family: Arial; margin: 0; background: #f5f6fa; }
-        header { background: var(--amazon-dark); color: white; padding: 10px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .logo { color: var(--amazon-yellow); font-weight: bold; font-size: 18px; }
-        .search-box { flex-grow: 1; margin: 0 10px; display: flex; }
-        .search-box input { width: 100%; padding: 8px; border: none; border-radius: 4px 0 0 4px; }
-        .search-box button { background: var(--amazon-yellow); border: none; padding: 8px 12px; border-radius: 0 4px 4px 0; cursor: pointer; }
-        .container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .card img { max-width: 100%; height: 120px; object-fit: contain; }
-        .buy-btn { display: block; background: var(--amazon-yellow); color: black; padding: 10px; border-radius: 20px; text-decoration: none; font-weight: bold; margin-top: 10px; border: 1px solid #d88a00; }
-        .admin-panel { background: #fff; padding: 20px; margin: 15px; border: 2px dashed #ccc; display: none; text-align: center; }
-        .admin-panel input { padding: 10px; margin: 5px; width: 90%; border: 1px solid #ddd; border-radius: 5px; }
+        :root { --amz-dark: #131921; --amz-light: #232f3e; --amz-yellow: #febd69; --amz-orange: #f3a847; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: #eaeded; }
+        
+        /* Header */
+        header { background: var(--amz-dark); color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+        .logo { color: white; font-size: 22px; font-weight: bold; text-decoration: none; }
+        .logo span { color: var(--amz-orange); }
+        
+        .search-container { flex-grow: 1; margin: 0 20px; display: flex; max-width: 700px; }
+        .search-container input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px 0 0 4px; outline: none; font-size: 15px; }
+        .search-container button { background: var(--amz-orange); border: none; padding: 10px 20px; border-radius: 0 4px 4px 0; cursor: pointer; color: #333; font-size: 18px; }
+
+        .nav-tools { display: flex; gap: 20px; align-items: center; }
+        .nav-tools i { font-size: 24px; cursor: pointer; color: white; }
+
+        /* Admin Panel */
+        .admin-panel { display: none; background: white; margin: 20px auto; padding: 30px; max-width: 450px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid var(--amz-orange); text-align: center; }
+        .admin-panel h2 { margin-bottom: 20px; color: var(--amz-dark); }
+        .admin-panel input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #a6a6a6; border-radius: 3px; box-sizing: border-box; }
+        
+        /* Product Layout */
+        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1400px; margin: auto; }
+        .product-card { background: white; border-radius: 4px; padding: 15px; display: flex; flex-direction: column; transition: 0.2s; border: 1px solid transparent; }
+        .product-card:hover { border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
+        .product-card h3 { font-size: 17px; font-weight: 500; color: #0f1111; margin: 0 0 10px 0; height: 45px; overflow: hidden; line-height: 1.3; }
+        .price-tag { color: #B12704; font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        
+        .amazon-btn { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; border-radius: 20px; color: #111; padding: 10px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; }
+        .amazon-btn:hover { background: #f0c14b; border-color: #846a29; }
+
+        footer { background: var(--amz-light); color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">SK Zenvy</div>
-    <div class="search-box">
-        <input type="text" placeholder="Search...">
-        <button><i class="fa fa-search"></i></button>
+    <a href="#" class="logo">sk <span>zenvyDeals</span></a>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for Gadgets, Earphones, and more...">
+        <button id="searchBtn"><i class="fa fa-search"></i></button>
     </div>
-    <div style="display:flex; gap:15px;">
-        <i class="fa fa-user" onclick="loginOTP()" style="cursor:pointer; font-size:20px; color:white;"></i>
-        <i class="fa fa-bars" onclick="showAdmin()" style="cursor:pointer; font-size:20px; color:white;"></i>
+
+    <div class="nav-tools">
+        <i class="fa fa-user-circle" onclick="loginDemo()" title="Account"></i>
+        <i class="fa fa-plus-square" id="adminTrigger" title="Add Product"></i>
     </div>
 </header>
 
-<div id="adminPanel" class="admin-panel">
-    <h3>Admin: Add Product</h3>
+<div class="admin-panel" id="adminArea">
+    <h2>Admin Dashboard</h2>
     <input type="text" id="pName" placeholder="Product Name">
-    <input type="text" id="pPrice" placeholder="Price (₹)">
-    <input type="text" id="pLink" placeholder="Affiliate Link">
-    <button class="buy-btn" onclick="saveToFirebase()" style="width:200px; margin:auto;">Publish</button>
+    <input type="number" id="pPrice" placeholder="Price (₹)">
+    <input type="text" id="pLink" placeholder="Amazon Affiliate Link">
+    <button class="amazon-btn" id="publishBtn" style="width: 100%; margin-top: 10px;">Publish to Store</button>
+    <p onclick="document.getElementById('adminArea').style.display='none'" style="color: #0066c0; cursor: pointer; margin-top: 15px;">Close Panel</p>
 </div>
 
-<div class="container" id="productContainer">
-    <p style="text-align:center;">Loading Deals...</p>
+<div class="container" id="productGrid">
+    <p style="text-align: center; grid-column: 1/-1;">Checking latest deals...</p>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<footer>
+    <p>© 2026 skzenvydealsenvyDeals | Built with ❤️ for SK Technova</p>
+    <p style="font-size: 12px; color: #ccc;">Affiliate Disclosure: We earn commissions on qualifying purchases at no extra cost to you.</p>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } 
+  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  // Aapki config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDsSxx3aBlhitrrHK4FjwSmZcfWXUFyFXs",
+    authDomain: "skzenvydeals.firebaseapp.com",
+    projectId: "skzenvydeals",
+    storageBucket: "skzenvydeals.firebasestorage.app",
+    messagingSenderId: "305993636391",
+    appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Admin Access
+  document.getElementById('adminTrigger').onclick = () => {
+    let p = prompt("Admin Password:");
+    if(p === "SK2026") {
+        document.getElementById('adminArea').style.display = 'block';
+        window.scrollTo(0,0);
+    } else {
+        alert("Incorrect Password!");
+    }
+  };
+
+  // Add Data
+  document.getElementById('publishBtn').onclick = async () => {
+    const n = document.getElementById('pName').value;
+    const pr = document.getElementById('pPrice').value;
+    const l = document.getElementById('pLink').value;
+
+    if(n && pr && l) {
+        try {
+            await addDoc(collection(db, "products"), {
+                name: n,
+                price: pr,
+                link: l,
+                createdAt: serverTimestamp()
+            });
+            alert("Success: Product is now live!");
+            document.getElementById('pName').value = "";
+            document.getElementById('pPrice').value = "";
+            document.getElementById('pLink').value = "";
+        } catch (e) { alert("Error: " + e.message); }
+    }
+  };
+
+  // Show Data
+  const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snapshot) => {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = "";
+    if (snapshot.empty) {
+        grid.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No products yet. Login as Admin to add some!</p>";
+        return;
+    }
+    snapshot.forEach((doc) => {
+        const p = doc.data();
+        grid.innerHTML += `
+            <div class="product-card">
+                <img src="https://m.media-amazon.com/images/I/41D99XCFS9L._SX300_SY300_QL70_FMwebp_.jpg" alt="Product Image">
+                <h3>${p.name}</h3>
+                <span class="price-tag">₹${p.price}</span>
+                <a href="${p.link}" class="amazon-btn" target="_blank">View on Amazon</a>
+            </div>
+        `;
+    });
+  });
+
+  // Search
+  document.getElementById('searchInput').onkeyup = (e) => {
+    let val = e.target.value.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(card => {
+        let t = card.querySelector('h3').innerText.toLowerCase();
+        card.style.display = t.includes(val) ? "flex" : "none";
+    });
+  };
+</script>
 
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDsSxx3aBlhitrrHK4FjwSmZcfWXUFyFXs",
-        authDomain: "skzenvydeals.firebaseapp.com",
-        projectId: "skzenvydeals",
-        storageBucket: "skzenvydeals.appspot.com",
-        messagingSenderId: "305993636391",
-        appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    function showAdmin() {
-        let p = prompt("Password:");
-        if(p === "SK2026") document.getElementById('adminPanel').style.display = 'block';
+    function loginDemo() {
+        alert("User Login System Coming Soon! Currently only Admin can add products.");
     }
-
-    function saveToFirebase() {
-        let n = document.getElementById('pName').value;
-        let pr = document.getElementById('pPrice').value;
-        let l = document.getElementById('pLink').value;
-        if(n && pr && l) {
-            db.collection("products").add({ name: n, price: pr, link: l, time: new Date() })
-            .then(() => { alert("Saved!"); location.reload(); });
-        }
-    }
-
-    function loadData() {
-        db.collection("products").orderBy("time", "desc").onSnapshot((snap) => {
-            let cont = document.getElementById('productContainer');
-            cont.innerHTML = "";
-            snap.forEach((doc) => {
-                let d = doc.data();
-                cont.innerHTML += `<div class="card">
-                    <img src="https://via.placeholder.com/150" alt="img">
-                    <h3>${d.name}</h3>
-                    <p style="color:green; font-weight:bold;">₹${d.price}</p>
-                    <a href="${d.link}" class="buy-btn" target="_blank">Buy Now</a>
-                </div>`;
-            });
-        });
-    }
-
-    function loginOTP() {
-        let ph = prompt("Number:");
-        if(ph) { alert("OTP sent to " + ph); let o = prompt("Enter 1234:"); if(o=="1234") alert("Login Success!"); }
-    }
-
-    window.onload = loadData;
 </script>
+
 </body>
 </html>
