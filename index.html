@@ -1,81 +1,39 @@
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
-// Aapke screenshot se li gayi real config
+// Aapki config
 const firebaseConfig = {
     apiKey: "AIzaSyDsSxx3aBlhitrrHK4FjwSmZcfWXUFyFXs",
     authDomain: "skzenvydeals.firebaseapp.com",
     projectId: "skzenvydeals",
-    storageBucket: "skzenvydeals.firebasestorage.app",
+    storageBucket: "skzenvydeals.appspot.com",
     messagingSenderId: "305993636391",
-    appId: "1:305993636391:web:7fb113fd544e4df34c4c02",
-    measurementId: "G-Q06H95381P"
+    appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
 };
 
-// Initialize Firebase
+// Initialize
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 1. ADMIN PANEL LOCK/UNLOCK
-function toggleAdminPanel() {
-    let pass = prompt("Admin Password daalein:");
-    if(pass === "SK2026") { // Aap ye password badal sakte hain
-        document.getElementById('adminPanel').style.display = 'block';
-    } else {
-        alert("Galat Password!");
-    }
-}
-
-// 2. PRODUCT PERMANENTLY ADD KARNA
-function addNewProduct() {
-    let name = document.getElementById('pName').value;
-    let price = document.getElementById('pPrice').value;
-    let link = document.getElementById('pLink').value;
-
-    if(name && price && link) {
-        // Firestore mein 'products' naam ki collection mein save hoga
-        db.collection("products").add({
-            name: name,
-            price: price,
-            link: link,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(() => {
-            alert("Success! Ab ye product sabko dikhega.");
-            document.getElementById('pName').value = "";
-            document.getElementById('pPrice').value = "";
-            document.getElementById('pLink').value = "";
-            loadProducts(); // List update karein
-        })
-        .catch((error) => alert("Error: " + error));
-    } else {
-        alert("Saari details bhariye!");
-    }
-}
-
-// 3. PRODUCTS LOAD KARNA (Duniya ko dikhane ke liye)
+// Product Load karne ka function
 function loadProducts() {
     const container = document.getElementById('productContainer');
-    
-    // Database se data khinchna
-    db.collection("products").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
-        container.innerHTML = ""; // Purana data saaf karein
+    db.collection("products").onSnapshot((querySnapshot) => {
+        container.innerHTML = ""; 
         querySnapshot.forEach((doc) => {
             let data = doc.data();
-            let card = `
+            container.innerHTML += `
                 <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="Product">
                     <h3>${data.name}</h3>
-                    <span class="new-price">₹${data.price}</span>
-                    <a href="${data.link}" class="buy-btn" target="_blank">View on Amazon</a>
-                </div>
-            `;
-            container.innerHTML += card;
+                    <p>₹${data.price}</p>
+                    <a href="${data.link}" class="buy-btn">Buy Now</a>
+                </div>`;
         });
+    }, (error) => {
+        console.log("Error loading products: ", error);
     });
 }
 
-// Page khulte hi products dikhao
 window.onload = loadProducts;
 </script>
