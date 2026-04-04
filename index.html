@@ -1,39 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK ZenvyDeals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --amazon-dark: #131921; --amazon-yellow: #ff9900; }
+        body { font-family: Arial; margin: 0; background: #f5f6fa; }
+        header { background: var(--amazon-dark); color: white; padding: 10px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+        .logo { color: var(--amazon-yellow); font-weight: bold; font-size: 18px; }
+        .search-box { flex-grow: 1; margin: 0 10px; display: flex; }
+        .search-box input { width: 100%; padding: 8px; border: none; border-radius: 4px 0 0 4px; }
+        .search-box button { background: var(--amazon-yellow); border: none; padding: 8px 12px; border-radius: 0 4px 4px 0; cursor: pointer; }
+        .container { padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card img { max-width: 100%; height: 120px; object-fit: contain; }
+        .buy-btn { display: block; background: var(--amazon-yellow); color: black; padding: 10px; border-radius: 20px; text-decoration: none; font-weight: bold; margin-top: 10px; border: 1px solid #d88a00; }
+        .admin-panel { background: #fff; padding: 20px; margin: 15px; border: 2px dashed #ccc; display: none; text-align: center; }
+        .admin-panel input { padding: 10px; margin: 5px; width: 90%; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">SK Zenvy</div>
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <button><i class="fa fa-search"></i></button>
+    </div>
+    <div style="display:flex; gap:15px;">
+        <i class="fa fa-user" onclick="loginOTP()" style="cursor:pointer; font-size:20px; color:white;"></i>
+        <i class="fa fa-bars" onclick="showAdmin()" style="cursor:pointer; font-size:20px; color:white;"></i>
+    </div>
+</header>
+
+<div id="adminPanel" class="admin-panel">
+    <h3>Admin: Add Product</h3>
+    <input type="text" id="pName" placeholder="Product Name">
+    <input type="text" id="pPrice" placeholder="Price (₹)">
+    <input type="text" id="pLink" placeholder="Affiliate Link">
+    <button class="buy-btn" onclick="saveToFirebase()" style="width:200px; margin:auto;">Publish</button>
+</div>
+
+<div class="container" id="productContainer">
+    <p style="text-align:center;">Loading Deals...</p>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
-// Aapki config
-const firebaseConfig = {
-    apiKey: "AIzaSyDsSxx3aBlhitrrHK4FjwSmZcfWXUFyFXs",
-    authDomain: "skzenvydeals.firebaseapp.com",
-    projectId: "skzenvydeals",
-    storageBucket: "skzenvydeals.appspot.com",
-    messagingSenderId: "305993636391",
-    appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyDsSxx3aBlhitrrHK4FjwSmZcfWXUFyFXs",
+        authDomain: "skzenvydeals.firebaseapp.com",
+        projectId: "skzenvydeals",
+        storageBucket: "skzenvydeals.appspot.com",
+        messagingSenderId: "305993636391",
+        appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
+    };
 
-// Initialize
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-// Product Load karne ka function
-function loadProducts() {
-    const container = document.getElementById('productContainer');
-    db.collection("products").onSnapshot((querySnapshot) => {
-        container.innerHTML = ""; 
-        querySnapshot.forEach((doc) => {
-            let data = doc.data();
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${data.name}</h3>
-                    <p>₹${data.price}</p>
-                    <a href="${data.link}" class="buy-btn">Buy Now</a>
+    function showAdmin() {
+        let p = prompt("Password:");
+        if(p === "SK2026") document.getElementById('adminPanel').style.display = 'block';
+    }
+
+    function saveToFirebase() {
+        let n = document.getElementById('pName').value;
+        let pr = document.getElementById('pPrice').value;
+        let l = document.getElementById('pLink').value;
+        if(n && pr && l) {
+            db.collection("products").add({ name: n, price: pr, link: l, time: new Date() })
+            .then(() => { alert("Saved!"); location.reload(); });
+        }
+    }
+
+    function loadData() {
+        db.collection("products").orderBy("time", "desc").onSnapshot((snap) => {
+            let cont = document.getElementById('productContainer');
+            cont.innerHTML = "";
+            snap.forEach((doc) => {
+                let d = doc.data();
+                cont.innerHTML += `<div class="card">
+                    <img src="https://via.placeholder.com/150" alt="img">
+                    <h3>${d.name}</h3>
+                    <p style="color:green; font-weight:bold;">₹${d.price}</p>
+                    <a href="${d.link}" class="buy-btn" target="_blank">Buy Now</a>
                 </div>`;
+            });
         });
-    }, (error) => {
-        console.log("Error loading products: ", error);
-    });
-}
+    }
 
-window.onload = loadProducts;
+    function loginOTP() {
+        let ph = prompt("Number:");
+        if(ph) { alert("OTP sent to " + ph); let o = prompt("Enter 1234:"); if(o=="1234") alert("Login Success!"); }
+    }
+
+    window.onload = loadData;
 </script>
+</body>
+</html>
