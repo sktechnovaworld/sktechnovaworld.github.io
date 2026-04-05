@@ -96,7 +96,7 @@
   // Admin Access
   document.getElementById('adminTrigger').onclick = () => {
     let p = prompt("Admin Password:");
-    if(p === "SK2026") {
+    if(p === "") {
         document.getElementById('adminArea').style.display = 'block';
         window.scrollTo(0,0);
     } else {
