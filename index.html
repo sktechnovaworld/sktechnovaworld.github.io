@@ -3,85 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>skzenvyDeals | Amazon Style Affiliate</title>
+    <title>skzenvyDeals | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --amz-dark: #131921; --amz-light: #232f3e; --amz-yellow: #febd69; --amz-orange: #f3a847; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: #eaeded; }
-        
-        /* Header */
+        :root { --amz-dark: #131921; --amz-orange: #f3a847; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #eaeded; }
         header { background: var(--amz-dark); color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
         .logo { color: white; font-size: 22px; font-weight: bold; text-decoration: none; }
         .logo span { color: var(--amz-orange); }
-        
-        .search-container { flex-grow: 1; margin: 0 20px; display: flex; max-width: 700px; }
-        .search-container input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px 0 0 4px; outline: none; font-size: 15px; }
-        .search-container button { background: var(--amz-orange); border: none; padding: 10px 20px; border-radius: 0 4px 4px 0; cursor: pointer; color: #333; font-size: 18px; }
-
-        .nav-tools { display: flex; gap: 20px; align-items: center; }
-        .nav-tools i { font-size: 24px; cursor: pointer; color: white; }
-
-        /* Admin Panel */
-        .admin-panel { display: none; background: white; margin: 20px auto; padding: 30px; max-width: 450px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid var(--amz-orange); text-align: center; }
-        .admin-panel h2 { margin-bottom: 20px; color: var(--amz-dark); }
-        .admin-panel input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #a6a6a6; border-radius: 3px; box-sizing: border-box; }
-        
-        /* Product Layout */
-        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 1400px; margin: auto; }
-        .product-card { background: white; border-radius: 4px; padding: 15px; display: flex; flex-direction: column; transition: 0.2s; border: 1px solid transparent; }
-        .product-card:hover { border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
-        .product-card h3 { font-size: 17px; font-weight: 500; color: #0f1111; margin: 0 0 10px 0; height: 45px; overflow: hidden; line-height: 1.3; }
-        .price-tag { color: #B12704; font-size: 24px; font-weight: bold; margin-bottom: 15px; }
-        
-        .amazon-btn { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; border-radius: 20px; color: #111; padding: 10px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; }
-        .amazon-btn:hover { background: #f0c14b; border-color: #846a29; }
-
-        footer { background: var(--amz-light); color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .search-container { flex-grow: 1; margin: 0 20px; display: flex; max-width: 600px; }
+        .search-container input { width: 100%; padding: 10px; border-radius: 4px 0 0 4px; border: none; outline: none; }
+        .search-container button { background: var(--amz-orange); border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; cursor: pointer; }
+        .nav-tools { display: flex; gap: 15px; }
+        .nav-tools i { font-size: 22px; cursor: pointer; }
+        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1300px; margin: auto; }
+        .product-card { background: white; padding: 15px; border-radius: 5px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #ddd; }
+        .product-card img { width: 100%; height: 180px; object-fit: contain; }
+        .product-card h3 { font-size: 15px; margin: 10px 0; height: 40px; overflow: hidden; }
+        .price { color: #B12704; font-size: 20px; font-weight: bold; }
+        .amazon-btn { background: #f0c14b; border: 1px solid #a88734; padding: 8px; text-align: center; text-decoration: none; color: black; border-radius: 20px; font-weight: bold; margin-top: 10px; }
+        #recaptcha-container { display: none; }
     </style>
 </head>
 <body>
 
 <header>
     <a href="#" class="logo">sk <span>zenvyDeals</span></a>
-    
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search for Gadgets, Earphones, and more...">
-        <button id="searchBtn"><i class="fa fa-search"></i></button>
+        <input type="text" id="searchInput" placeholder="Search products...">
+        <button><i class="fa fa-search"></i></button>
     </div>
-
     <div class="nav-tools">
-        <i class="fa fa-user-circle" onclick="loginDemo()" title="Account"></i>
-        <i class="fa fa-ellipsis-v" id="adminTrigger" title="Menu"></i>
-
+        <i class="fa fa-user-circle" id="loginBtn"></i>
+        <i class="fa fa-ellipsis-v"></i>
     </div>
 </header>
 
-<div class="admin-panel" id="adminArea">
-    <h2>Admin Dashboard</h2>
-    <input type="text" id="pName" placeholder="Product Name">
-    <input type="number" id="pPrice" placeholder="Price (₹)">
-    <input type="text" id="pImage" placeholder="Paste Image URL here">
-    <button class="amazon-btn" id="publishBtn" style="width: 100%; margin-top: 10px;">Publish to Store</button>
-    <p onclick="document.getElementById('adminArea').style.display='none'" style="color: #0066c0; cursor: pointer; margin-top: 15px;">Close Panel</p>
-</div>
+<div id="recaptcha-container"></div>
 
 <div class="container" id="productGrid">
-    <p style="text-align: center; grid-column: 1/-1;">Checking latest deals...</p>
+    <p style="text-align: center; grid-column: 1/-1;">Loading deals...</p>
 </div>
-
-<footer>
-    <p>© 2026 skzenvydeals| Built with ❤️ for SK Technova</p>
-    <p style="font-size: 12px; color: #ccc;">Affiliate Disclosure: We earn commissions on qualifying purchases at no extra cost to you.</p>
-</footer>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } 
-  from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-  // Aapki config
-    const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyDaSxx3aB1hitzrHK4FjwSmZcfWXUFyFXs",
     authDomain: "skzenvydeals.firebaseapp.com",
     projectId: "skzenvydeals",
@@ -90,85 +59,49 @@
     appId: "1:305993636391:web:7fb113fd544e4df34c4c02"
   };
 
-
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
-  // Admin Access
-  document.getElementById('adminTrigger').onclick = () => {
-    let p = prompt("Admin Password:");
-    if(p === "") {
-        document.getElementById('adminArea').style.display = 'block';
-        window.scrollTo(0,0);
-    } else {
-        alert("Incorrect Password!");
-    }
-  };
-
-  // Add Data
-  document.getElementById('publishBtn').onclick = async () => {
-    const n = document.getElementById('pName').value;
-    const pr = document.getElementById('pPrice').value;
-    const l = document.getElementById('pLink').value;
-
-    if(n && pr && l) {
-        try {
-            await addDoc(collection(db, "products"), {
-                name: n,
-                price: pr,
-                link: l,
-                createdAt: serverTimestamp()
-            });
-            alert("Success: Product is now live!");
-            document.getElementById('pName').value = "";
-            document.getElementById('pPrice').value = "";
-            document.getElementById('pLink').value = "";
-        } catch (e) { alert("Error: " + e.message); }
-    }
-  };
-
-  // Show Data
-const q = query(collection(db, "products"), orderBy("name"));
-
-onSnapshot(q, (snapshot) => {
-  const grid = document.getElementById('productGrid');
-  grid.innerHTML = ""; 
-
-  if (snapshot.empty) {
-    grid.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No products yet. Login as Admin to add some!</p>";
-    return;
-  }
-
-  snapshot.forEach((doc) => {
-    const p = doc.data();
-    const productHTML = `
-      <div class="product-card">
-        <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}" style="width:100%; height:180px; object-fit:contain;">
-        <h3>${p.name}</h3>
-        <span class="price-tag">₹${p.price}</span>
-        <a href="${p.link}" class="amazon-btn" target="_blank">View on Amazon</a>
-      </div>`;
-    grid.innerHTML += productHTML;
+  // 1. Fetch Products
+  const q = query(collection(db, "products"), orderBy("name"));
+  onSnapshot(q, (snapshot) => {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = "";
+    snapshot.forEach((doc) => {
+      const p = doc.data();
+      grid.innerHTML += `
+        <div class="product-card">
+          <img src="${p.image}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p class="price">₹${p.price}</p>
+          <a href="${p.link}" class="amazon-btn" target="_blank">View on Amazon</a>
+        </div>`;
+    });
   });
-});
-  
-            
 
-  // Search
+  // 2. Real OTP System
+  window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' }, auth);
+
+  document.getElementById('loginBtn').onclick = () => {
+    const phone = prompt("Enter phone number (+91...):");
+    if (phone) {
+      signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+        .then((result) => {
+          const otp = prompt("Enter 6-digit OTP:");
+          return result.confirm(otp);
+        }).then(() => alert("Login Success!"))
+        .catch((err) => alert("Error: " + err.message));
+    }
+  };
+
+  // 3. Search
   document.getElementById('searchInput').onkeyup = (e) => {
-    let val = e.target.value.toLowerCase();
+    const val = e.target.value.toLowerCase();
     document.querySelectorAll('.product-card').forEach(card => {
-        let t = card.querySelector('h3').innerText.toLowerCase();
-        card.style.display = t.includes(val) ? "flex" : "none";
+      card.style.display = card.querySelector('h3').innerText.toLowerCase().includes(val) ? "flex" : "none";
     });
   };
 </script>
-
-<script>
-    function loginDemo() {
-        alert("User Login System Coming Soon! Currently only Admin can add products.");
-    }
-</script>
-
 </body>
 </html>
