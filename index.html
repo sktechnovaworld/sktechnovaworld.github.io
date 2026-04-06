@@ -79,28 +79,39 @@
     });
   });
 
-  // 2. OTP Login - Sirf Profile Icon Par
-  window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' }, auth);
+  // Login Logic - Sirf Profile Icon Par
+window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { 
+    'size': 'invisible' 
+}, auth);
 
-  document.getElementById('loginBtn').onclick = () => {
-    let phone = prompt("Enter Mobile Number:");
+document.getElementById('loginBtn').onclick = () => {
+    let phone = prompt("Enter Mobile Number (with +91):");
+    
     if (phone) {
-        // Automatically add +91 to fix invalid format error
+        // Auto-fix for +91
         if (!phone.startsWith('+')) {
             phone = '+91' + phone;
         }
 
+        console.log("Sending OTP to:", phone); // Debugging ke liye
+
         signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
             .then((result) => {
-                const otp = prompt("Enter 6-digit OTP received:");
+                const otp = prompt("OTP aa gaya! Yahan dalo:");
                 return result.confirm(otp);
-            }).then(() => {
+            })
+            .then(() => {
                 alert("Login Success!");
-            }).catch((err) => {
-                alert("Error: " + err.message);
+            })
+            .catch((err) => {
+                // Agar gayab ho raha hai toh yahan error dikhega
+                console.error("Firebase Error:", err);
+                alert("Galti: " + err.message);
+                // Recaptcha reset karna zaroori hai agar error aaye
+                window.recaptchaVerifier.render().then(id => grecaptcha.reset(id));
             });
     }
-  };
+};
 
   // 3. Search Bar logic
   document.getElementById('searchInput').onkeyup = (e) => {
