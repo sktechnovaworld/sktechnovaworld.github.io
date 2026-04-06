@@ -6,87 +6,112 @@
     <title>skzenvyDeals | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --amz-dark: #131921; --amz-orange: #f3a847; --wa-green: #25D366; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #eaeded; padding-bottom: 80px; }
+        :root { --amz-dark: #131921; --amz-light-dark: #232f3e; --amz-orange: #f3a847; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #eaeded; padding-bottom: 70px; }
         
         /* Header */
-        header { background: var(--amz-dark); color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .logo { color: white; font-size: 22px; font-weight: bold; text-decoration: none; }
+        header { background: var(--amz-dark); color: white; padding: 10px 15px; position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .logo { color: white; font-size: 20px; font-weight: bold; text-decoration: none; }
         .logo span { color: var(--amz-orange); }
-        .search-container { flex-grow: 1; margin: 0 20px; display: flex; max-width: 600px; }
-        .search-container input { width: 100%; padding: 10px; border-radius: 4px 0 0 4px; border: none; outline: none; }
+        .search-container { display: flex; width: 100%; }
+        .search-container input { flex-grow: 1; padding: 10px; border-radius: 4px 0 0 4px; border: none; outline: none; }
         .search-container button { background: var(--amz-orange); border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; cursor: pointer; }
-        
-        .nav-tools { display: flex; gap: 15px; align-items: center; }
-        .nav-tools i, .nav-tools img { font-size: 22px; cursor: pointer; color: white; border-radius: 50%; width: 28px; height: 28px; object-fit: cover; }
+        .user-icon img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid white; cursor: pointer; }
 
-        /* Sidebar (3-Dots Menu) */
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; right: 0; background-color: white; transition: 0.3s; overflow-x: hidden; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
-        .sidebar a { padding: 15px 25px; text-decoration: none; font-size: 16px; color: #333; display: flex; align-items: center; border-bottom: 1px solid #eee; }
-        .sidebar a i { width: 30px; color: var(--amz-orange); }
+        /* Swipe Grid Rows */
+        .section-title { margin: 15px 15px 5px; font-size: 16px; font-weight: bold; color: #333; }
+        .container { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 12px; 
+            padding: 5px 15px 15px; 
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .container::-webkit-scrollbar { display: none; }
 
-        /* Product Grid */
-        .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1300px; margin: auto; }
-        .product-card { background: white; padding: 15px; border-radius: 5px; display: flex; flex-direction: column; border: 1px solid #ddd; transition: 0.3s; }
-        .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
-        .price { color: #B12704; font-size: 20px; font-weight: bold; margin-bottom: 10px; }
-        .amazon-btn { background: #f0c14b; border: 1px solid #a88734; padding: 10px; text-align: center; text-decoration: none; color: black; border-radius: 5px; font-weight: bold; }
+        /* Compact Card */
+        .product-card { 
+            flex: 0 0 160px; 
+            background: white; 
+            padding: 10px; 
+            border-radius: 6px; 
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid #ddd; 
+            scroll-snap-align: start; 
+        }
+        .product-card img { width: 100%; height: 120px; object-fit: contain; }
+        .product-card h3 { font-size: 12px; height: 32px; overflow: hidden; margin: 8px 0; color: #111; line-height: 1.3; }
+        .price { color: #B12704; font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+        .amazon-btn { background: #ffd814; border: 1px solid #fcd200; padding: 8px; text-align: center; text-decoration: none; color: black; border-radius: 20px; font-size: 11px; font-weight: bold; }
+
+        /* --- PRO FOOTER SYSTEM --- */
+        .back-to-top { background: #37475a; color: white; text-align: center; padding: 15px; font-size: 13px; cursor: pointer; margin-top: 20px; }
+        .footer-links { background: var(--amz-light-dark); color: #ddd; padding: 30px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 13px; }
+        .footer-links b { color: white; display: block; margin-bottom: 12px; font-size: 14px; }
+        .footer-links a { color: #ddd; text-decoration: none; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .footer-bottom { background: var(--amz-dark); text-align: center; padding: 25px; color: #999; font-size: 12px; border-top: 1px solid #3a4553; }
+        .footer-logo { font-size: 20px; font-weight: bold; color: white; margin-bottom: 10px; }
+        .footer-logo span { color: var(--amz-orange); }
 
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
-        .nav-item { text-align: center; color: #555; text-decoration: none; font-size: 11px; flex: 1; border: none; background: none; cursor: pointer; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; }
-
-        /* Footer */
-        footer { text-align: center; padding: 25px; color: #666; font-size: 13px; border-top: 1px solid #ddd; margin-top: 20px; background: #f9f9f9; }
+        .nav-item { text-align: center; color: #555; text-decoration: none; font-size: 10px; flex: 1; cursor: pointer; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="#" class="logo">sk <span>zenvyDeals</span></a>
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search products...">
-        <button><i class="fa fa-search"></i></button>
-    </div>
-    <div class="nav-tools">
-        <div id="headerUser" onclick="handleAuthAction()">
-            <i class="fa fa-user-circle"></i>
+    <div class="nav-top">
+        <a href="#" class="logo">sk <span>zenvyDeals</span></a>
+        <div id="headerUser" class="user-icon" onclick="handleAuthAction()">
+            <i class="fa fa-user-circle" style="font-size: 24px;"></i>
         </div>
-        <i class="fa fa-ellipsis-v" onclick="openNav()"></i>
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search deals...">
+        <button><i class="fa fa-search"></i></button>
     </div>
 </header>
 
-<div id="sideMenu" class="sidebar">
-    <a href="javascript:void(0)" onclick="closeNav()" style="background: #eee; font-size: 14px; justify-content: center;">Close Menu ×</a>
-    <a href="https://t.me/Sachinkumartechno" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
-    <a href="https://wa.me/917991352092" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Order</a>
-    <a href="mailto:sktechnovaworld@gmail.com"><i class="fas fa-envelope"></i> Gmail Support</a>
-    <a href="javascript:void(0)" id="sideLogout" onclick="handleLogout()" style="display:none; color: red;"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</div>
+<div class="section-title">🔥 Trending Now</div>
+<div class="container" id="row1"></div>
 
-<div class="container" id="productGrid">
-    <p style="text-align: center; grid-column: 1/-1;">Loading deals...</p>
-</div>
+<div class="section-title">⚡ Most Discounted</div>
+<div class="container" id="row2"></div>
 
-<div class="bottom-nav">
-    <div class="nav-item" onclick="handleAuthAction()">
-        <i class="fa fa-user-circle"></i>Profile
+<div class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Back to top</div>
+
+<div class="footer-links">
+    <div>
+        <b>Let Us Help You</b>
+        <a href="https://www.amazon.in/gp/help/customer/display.html" target="_blank">Your Account</a>
+        <a href="https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470" target="_blank">Returns Centre</a>
+        <a href="https://www.amazon.in/gp/help/customer/contact-us" target="_blank">Purchase Protection</a>
+        <a href="https://www.amazon.in/gp/help/customer/contact-us" target="_blank"><i class="fa fa-robot"></i> Amazon AI Chat</a>
     </div>
-    <a href="https://www.amazon.in/gp/css/order-history" target="_blank" class="nav-item">
-        <i class="fa fa-truck"></i>Tracking
-    </a>
-    <a href="https://www.amazon.in/gp/help/customer/contact-us" target="_blank" class="nav-item">
-        <i class="fa fa-robot"></i>AI Chat
-    </a>
-    <a href="https://wa.me/917991352092" target="_blank" class="nav-item">
-        <i class="fab fa-whatsapp"></i>Order WA
-    </a>
+
+    <div>
+        <b>Connect with Us</b>
+        <a href="https://wa.me/917991352092" target="_blank"><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp</a>
+        <a href="https://t.me/Sachinkumartechno" target="_blank"><i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram</a>
+        <a href="mailto:sktechnovaworld@gmail.com"><i class="fa fa-envelope" style="color: #ea4335;"></i> Gmail Support</a>
+    </div>
 </div>
 
-<footer>
+<div class="footer-bottom">
+    <div class="footer-logo">sk <span>zenvyDeals</span></div>
     © All copyright reserved 2026 - skzenvyDeals
-</footer>
+</div>
+<div class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fa fa-home"></i>Home</a>
+    <a href="https://www.amazon.in/gp/css/order-history" target="_blank" class="nav-item"><i class="fa fa-truck"></i>Orders</a>
+    <a href="https://wa.me/917991352092" target="_blank" class="nav-item"><i class="fab fa-whatsapp"></i>Support</a>
+    <div class="nav-item" onclick="handleAuthAction()"><i class="fa fa-user-circle"></i>Profile</div>
+</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -107,52 +132,45 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  // Products Loader (Removed WhatsApp Button from Card)
+  // Load Products into 2 Rows for better Swipe
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = "";
+    const r1 = document.getElementById('row1');
+    const r2 = document.getElementById('row2');
+    r1.innerHTML = ""; r2.innerHTML = "";
+    
+    let index = 0;
     snapshot.forEach((doc) => {
       const p = doc.data();
-      grid.innerHTML += `
+      const html = `
         <div class="product-card">
           <img src="${p.image}" alt="${p.name}">
           <h3>${p.name}</h3>
           <p class="price">₹${p.price}</p>
-          <a href="${p.link}" class="amazon-btn" target="_blank">Buy on Amazon</a>
+          <a href="${p.link}" class="amazon-btn" target="_blank">Buy Now</a>
         </div>`;
+      
+      if(index % 2 === 0) r1.innerHTML += html;
+      else r2.innerHTML += html;
+      index++;
     });
   });
 
-  // Auth Functions
+  // Auth Handling
   window.handleAuthAction = () => {
     if (!auth.currentUser) {
-        signInWithPopup(auth, provider).catch(err => console.log(err));
+      signInWithPopup(auth, provider).catch(err => console.log(err));
     } else {
-        if(confirm("Logout karna chahte hain?")) handleLogout();
+      if(confirm("Logout?")) signOut(auth).then(() => location.reload());
     }
-  };
-
-  window.handleLogout = () => {
-    signOut(auth).then(() => location.reload());
   };
 
   onAuthStateChanged(auth, (user) => {
     const hUser = document.getElementById('headerUser');
-    const sideLogout = document.getElementById('sideLogout');
-    if (user) {
-        hUser.innerHTML = `<img src="${user.photoURL}" alt="User">`;
-        sideLogout.style.display = 'flex';
-    } else {
-        hUser.innerHTML = `<i class="fa fa-user-circle"></i>`;
-        sideLogout.style.display = 'none';
-    }
+    if (user) hUser.innerHTML = `<img src="${user.photoURL}" alt="User">`;
+    else hUser.innerHTML = `<i class="fa fa-user-circle" style="font-size: 24px;"></i>`;
   });
 
-  // UI Helpers
-  window.openNav = () => document.getElementById("sideMenu").style.width = "250px";
-  window.closeNav = () => document.getElementById("sideMenu").style.width = "0";
-
-  // Search Logic
+  // Search Function
   document.getElementById('searchInput').onkeyup = (e) => {
     const val = e.target.value.toLowerCase();
     document.querySelectorAll('.product-card').forEach(card => {
