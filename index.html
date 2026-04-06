@@ -14,14 +14,13 @@
         .search-container { flex-grow: 1; margin: 0 20px; display: flex; max-width: 600px; }
         .search-container input { width: 100%; padding: 10px; border-radius: 4px 0 0 4px; border: none; outline: none; }
         .search-container button { background: var(--amz-orange); border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; cursor: pointer; }
-        .nav-tools { display: flex; gap: 15px; }
+        .nav-tools { display: flex; gap: 15px; align-items: center; }
         .nav-tools i { font-size: 22px; cursor: pointer; color: white; }
         .container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; max-width: 1300px; margin: auto; }
         .product-card { background: white; padding: 15px; border-radius: 5px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #ddd; min-height: 350px; }
         .product-card img { width: 100%; height: 180px; object-fit: contain; }
         .price { color: #B12704; font-size: 20px; font-weight: bold; }
         .amazon-btn { background: #f0c14b; border: 1px solid #a88734; padding: 8px; text-align: center; text-decoration: none; color: black; border-radius: 20px; font-weight: bold; margin-top: 10px; }
-        /* Recaptcha ko chhipane ke liye */
         #recaptcha-container { display: none; }
     </style>
 </head>
@@ -34,7 +33,8 @@
         <button><i class="fa fa-search"></i></button>
     </div>
     <div class="nav-tools">
-        <i class="fa fa-user-circle" id="loginBtn"></i>
+        <i class="fa fa-user-circle" id="loginBtn" title="Login"></i>
+        <i class="fa fa-ellipsis-v" style="cursor: default;" title="Menu (Coming Soon)"></i>
     </div>
 </header>
 
@@ -49,7 +49,6 @@
   import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
   import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-  // Aapka Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyDaSxx3aB1hitzrHK4FjwSmZcfWXUFyFXs",
     authDomain: "skzenvydeals.firebaseapp.com",
@@ -63,7 +62,7 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // 1. Firestore se Products dikhana
+  // 1. Products Display Logic
   const q = query(collection(db, "products"), orderBy("name"));
   onSnapshot(q, (snapshot) => {
     const grid = document.getElementById('productGrid');
@@ -80,28 +79,30 @@
     });
   });
 
-  // 2. ASLI OTP LOGIN SYSTEM
-  window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { 
-    'size': 'invisible' 
-  }, auth);
+  // 2. OTP Login - Sirf Profile Icon Par
+  window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' }, auth);
 
   document.getElementById('loginBtn').onclick = () => {
-    const phone = prompt("Enter mobile number (+91...):");
+    let phone = prompt("Enter Mobile Number:");
     if (phone) {
-      const appVerifier = window.recaptchaVerifier;
-      signInWithPhoneNumber(auth, phone, appVerifier)
-        .then((result) => {
-          const otp = prompt("Enter 6-digit OTP received:");
-          return result.confirm(otp);
-        }).then(() => {
-          alert("Login Success! Ab aap Deals dekh sakte hain.");
-        }).catch((err) => {
-          alert("Error: " + err.message);
-        });
+        // Automatically add +91 to fix invalid format error
+        if (!phone.startsWith('+')) {
+            phone = '+91' + phone;
+        }
+
+        signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+            .then((result) => {
+                const otp = prompt("Enter 6-digit OTP received:");
+                return result.confirm(otp);
+            }).then(() => {
+                alert("Login Success!");
+            }).catch((err) => {
+                alert("Error: " + err.message);
+            });
     }
   };
 
-  // 3. Search Logic
+  // 3. Search Bar logic
   document.getElementById('searchInput').onkeyup = (e) => {
     const val = e.target.value.toLowerCase();
     document.querySelectorAll('.product-card').forEach(card => {
