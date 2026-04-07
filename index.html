@@ -19,7 +19,7 @@
         .search-container input { flex-grow: 1; padding: 10px; border-radius: 4px 0 0 4px; border: none; outline: none; }
         .search-container button { background: var(--amz-orange); border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; }
 
-        /* Sidebar Styling */
+        /* Sidebar Upgrade */
         .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: -2px 0 10px rgba(0,0,0,0.2); }
         .sidebar.active { right: 0; }
         .sidebar-header { background: var(--amz-blue); color: white; padding: 20px 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
@@ -27,16 +27,20 @@
         .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f1f1; font-size: 14px; cursor: pointer; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
 
-        /* About Section in Sidebar */
-        .about-box { padding: 20px; font-size: 12px; color: #555; line-height: 1.6; background: #f9f9f9; margin-top: 10px; }
-        .about-box b { color: var(--amz-blue); }
+        /* Trust Box Styling */
+        .trust-section { padding: 15px; }
+        .trust-box { border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 12px; line-height: 1.4; border-left: 4px solid var(--amz-orange); }
+        .box-blue { background: #e7f3ff; color: #004085; border-left-color: #007bff; }
+        .box-orange { background: #fff3cd; color: #856404; border-left-color: #ff9900; }
+        .box-green { background: #d4edda; color: #155724; border-left-color: #28a745; }
+        .trust-box b { display: block; margin-bottom: 4px; font-size: 13px; }
 
+        /* Rest of the styles... (Pehle wale same hain) */
         .cat-scroll { display: flex; overflow-x: auto; background: white; padding: 12px 5px; gap: 12px; border-bottom: 1px solid #ddd; }
         .cat-scroll::-webkit-scrollbar { display: none; }
         .cat-box { min-width: 65px; text-align: center; text-decoration: none; color: #333; }
         .cat-icon { width: 45px; height: 45px; background: #f8f9fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; border: 1px solid #eee; font-size: 18px; }
         .cat-box span { font-size: 10px; font-weight: 600; }
-
         .section-title { margin: 15px 12px 8px; font-size: 14px; font-weight: bold; }
         .container { display: flex; overflow-x: auto; gap: 10px; padding: 0 12px 15px; }
         .container::-webkit-scrollbar { display: none; }
@@ -45,19 +49,14 @@
         .product-card h3 { font-size: 11px; height: 30px; overflow: hidden; margin: 8px 0; color: #222; }
         .price { color: #B12704; font-size: 16px; font-weight: bold; }
         .amazon-btn { display: block; background: #ffd814; padding: 8px 0; text-align: center; text-decoration: none; color: #111; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #fcd200; }
-
         .back-to-top { background: #37475a; color: white; text-align: center; padding: 15px; font-size: 13px; cursor: pointer; display: block; }
-        
+        .amz-contact-bar { background: #37475a; text-align: center; padding: 12px; border-bottom: 1px solid #444; }
+        .amz-contact-bar a { color: #f3a847; text-decoration: none; font-weight: bold; font-size: 14px; }
         .main-footer { background: var(--amz-blue); color: white; padding: 30px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .footer-col h4 { font-size: 14px; margin: 0 0 15px; color: white; font-weight: bold; }
         .footer-col a { display: block; color: #ddd; text-decoration: none; font-size: 12px; margin-bottom: 12px; }
         .footer-col a i { margin-right: 8px; color: var(--amz-orange); width: 14px; }
-        
-        .amz-contact-bar { background: #37475a; text-align: center; padding: 12px; border-bottom: 1px solid #444; }
-        .amz-contact-bar a { color: #f3a847; text-decoration: none; font-weight: bold; font-size: 14px; }
-
         .footer-bottom { background: var(--amz-dark); text-align: center; padding: 20px; color: #999; font-size: 10px; border-top: 1px solid #333; }
-
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e0e0e0; z-index: 1000; }
         .nav-item { text-align: center; color: #666; text-decoration: none; font-size: 10px; flex: 1; border: none; background: none; cursor: pointer; }
         .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; }
@@ -69,15 +68,32 @@
 
 <div class="overlay" id="overlay"></div>
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-header"><span>Menu</span><i class="fa fa-times" onclick="toggleMenu()"></i></div>
+    <div class="sidebar-header"><span>Official Menu</span><i class="fa fa-times" onclick="toggleMenu()"></i></div>
     <div class="sidebar-menu">
         <div class="sidebar-item" onclick="location.reload()"><i class="fa fa-sync-alt"></i> Refresh All Deals</div>
-        <div class="sidebar-item" onclick="shareSite()"><i class="fa fa-share-alt"></i> Share with Friends</div>
+        <div class="sidebar-item" onclick="shareSite()"><i class="fab fa-whatsapp"></i> Share with Friends</div>
         <a href="https://www.amazon.in/gp/history?tag=sktechnovaworld-21" class="sidebar-item"><i class="fa fa-cogs"></i> Advanced Settings</a>
         
-        <div class="about-box">
-            <b>About skzenvyDeals</b><br>
-            Welcome to your ultimate shopping destination! Hum Amazon se sabse sasti aur best quality deals select karke aapke liye laate hain. Hamara maqsad aapka paisa aur waqt bachana hai. Har kharidari par trust aur bachat ki guarantee!
+        <div class="trust-section">
+            <div class="trust-box box-orange">
+                <b>🔥 Aaj Ki Loot</b>
+                Scanning 1500+ categories for 80% Off deals. Hum aapke liye sabse sasti deals dhoondhte hain!
+            </div>
+            
+            <div class="trust-box box-blue">
+                <b>🛡️ 100% Secure</b>
+                Aapki payment Amazon India handle karta hai. Hum koi bhi personal data save nahi karte.
+            </div>
+
+            <div class="trust-box box-green">
+                <b>✅ Verified Partner</b>
+                Transparency is key: official partner ID             sktechnovaworld-21
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 10px; opacity: 0.6;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" width="80">
+            <p style="font-size: 9px; margin-top: 5px;">Amazon Associate Program Member</p>
         </div>
     </div>
 </div>
@@ -122,7 +138,7 @@
         <h4>Customer Help</h4>
         <a href="https://www.amazon.in/gp/help/customer/display.html?tag=sktechnovaworld-21"><i class="fa fa-user"></i> Your Account</a>
         <a href="https://www.amazon.in/gp/help/customer/contact-us?tag=sktechnovaworld-21"><i class="fa fa-comments"></i> Ai Chat Assistant</a>
-        <a href="https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&tag=sktechnovaworld-21"><i class="fa fa-info-circle"></i> About Amazon</a>
+        <a href="javascript:void(0)" onclick="toggleMenu()"><i class="fa fa-info-circle"></i> About skzenvyDeals</a>
         <a href="https://www.amazon.in/?tag=sktechnovaworld-21"><i class="fa fa-truck"></i> Order Tracking</a>
     </div>
     <div class="footer-col">
@@ -152,15 +168,11 @@
     document.getElementById('overlay').onclick = toggleMenu;
 
     function shareSite() {
+        const shareText = "🔥 *skzenvyDeals - Loot Deals & Discounts!* 🔥\n\nBhai, is website par Amazon ki sabse sasti deals milti hain. Yahan se order kar, paisa bacha! 💰\n\n👉 *Store Link:* " + window.location.href;
+        const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(shareText);
         if (navigator.share) {
-            navigator.share({
-                title: 'skzenvyDeals',
-                text: 'Check out the best Amazon deals here!',
-                url: window.location.href
-            });
-        } else {
-            alert("Sharing not supported on this browser. Copy the URL instead!");
-        }
+            navigator.share({ title: 'skzenvyDeals', text: shareText, url: window.location.href }).catch(() => { window.open(whatsappUrl, '_blank'); });
+        } else { window.open(whatsappUrl, '_blank'); }
     }
 </script>
 
@@ -191,10 +203,10 @@
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1'), r2 = document.getElementById('row2');
     r1.innerHTML = ""; r2.innerHTML = "";
-    let i = 0;
-    snapshot.forEach((doc) => {
+    let i = 0; snapshot.forEach((doc) => {
       const p = doc.data();
-      const html = `<div class="product-card"><img src="${p.image}"><h3>${p.name}</h3><p class="price">₹${p.price}</p><a href="${p.link}" class="amazon-btn" target="_blank">Buy Now ⮕</a></div>`;
+      const html = `<div class="product-card"><img src="${p.image}"><h3>${p.name}</h3><p class="price">₹${p.price}</p><a href="${p.link}" class="amazon-btn" target="_blank">Buy on Amazon ⮕</a></div>`;
+
       if(i % 2 === 0) r1.innerHTML += html; else r2.innerHTML += html;
       i++;
     });
