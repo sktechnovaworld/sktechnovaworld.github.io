@@ -33,9 +33,10 @@
         .box-blue { background: #e7f3ff; color: #004085; border-left-color: #007bff; }
         .box-orange { background: #fff3cd; color: #856404; border-left-color: #ff9900; }
         .box-green { background: #d4edda; color: #155724; border-left-color: #28a745; }
+        .box-yellow { background: #fffde7; color: #f57f17; border-left-color: #fbc02d; }
         .trust-box b { display: block; margin-bottom: 4px; font-size: 13px; }
 
-        /* Rest of the styles... (Pehle wale same hain) */
+        /* Navigation Styles */
         .cat-scroll { display: flex; overflow-x: auto; background: white; padding: 12px 5px; gap: 12px; border-bottom: 1px solid #ddd; }
         .cat-scroll::-webkit-scrollbar { display: none; }
         .cat-box { min-width: 65px; text-align: center; text-decoration: none; color: #333; }
@@ -43,24 +44,26 @@
         .cat-box span { font-size: 10px; font-weight: 600; }
         .section-title { margin: 15px 12px 8px; font-size: 14px; font-weight: bold; }
         .container { display: flex; overflow-x: auto; gap: 10px; padding: 0 12px 15px; }
-        .container::-webkit-scrollbar { display: none; }
         .product-card { flex: 0 0 160px; background: white; padding: 10px; border-radius: 8px; border: 1px solid #e0e0e0; }
         .product-card img { width: 100%; height: 120px; object-fit: contain; }
         .product-card h3 { font-size: 11px; height: 30px; overflow: hidden; margin: 8px 0; color: #222; }
         .price { color: #B12704; font-size: 16px; font-weight: bold; }
         .amazon-btn { display: block; background: #ffd814; padding: 8px 0; text-align: center; text-decoration: none; color: #111; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #fcd200; }
-        .back-to-top { background: #37475a; color: white; text-align: center; padding: 15px; font-size: 13px; cursor: pointer; display: block; }
-        .amz-contact-bar { background: #37475a; text-align: center; padding: 12px; border-bottom: 1px solid #444; }
+        .amz-contact-bar { background: #37475a; text-align: center; padding: 12px; }
         .amz-contact-bar a { color: #f3a847; text-decoration: none; font-weight: bold; font-size: 14px; }
         .main-footer { background: var(--amz-blue); color: white; padding: 30px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .footer-col h4 { font-size: 14px; margin: 0 0 15px; color: white; font-weight: bold; }
+        .footer-col h4 { font-size: 14px; margin: 0 0 15px; color: white; }
         .footer-col a { display: block; color: #ddd; text-decoration: none; font-size: 12px; margin-bottom: 12px; }
-        .footer-col a i { margin-right: 8px; color: var(--amz-orange); width: 14px; }
-        .footer-bottom { background: var(--amz-dark); text-align: center; padding: 20px; color: #999; font-size: 10px; border-top: 1px solid #333; }
+        .footer-col a i { margin-right: 8px; color: var(--amz-orange); }
+        .footer-bottom { background: var(--amz-dark); text-align: center; padding: 20px; color: #999; font-size: 10px; }
+
+        /* Bottom Nav + Light Effects */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e0e0e0; z-index: 1000; }
-        .nav-item { text-align: center; color: #666; text-decoration: none; font-size: 10px; flex: 1; border: none; background: none; cursor: pointer; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; }
+        .nav-item { text-align: center; color: #666; text-decoration: none; font-size: 10px; flex: 1; border: none; background: none; cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; transition: 0.2s; }
         .nav-item.active { color: var(--amz-orange); }
+        .nav-item:active { transform: scale(0.9); background: rgba(243, 168, 71, 0.1); border-radius: 8px; }
+        .nav-item:active i { color: var(--amz-orange); text-shadow: 0 0 8px rgba(243, 168, 71, 0.8); }
         .profile-img { width: 22px; height: 22px; border-radius: 50%; display: block; margin: 0 auto 3px; }
     </style>
 </head>
@@ -72,29 +75,11 @@
     <div class="sidebar-menu">
         <div class="sidebar-item" onclick="location.reload()"><i class="fa fa-sync-alt"></i> Refresh All Deals</div>
         <div class="sidebar-item" onclick="shareSite()"><i class="fab fa-whatsapp"></i> Share with Friends</div>
-   <a href="https://www.amazon.in/gp/css/
-homepage.html?tag=sktechnovaworld-21" class="sidebar-item"><i class="fa fa-cogs"></i> Advanced Settings</a>
-
         <div class="trust-section">
-            <div class="trust-box box-orange">
-                <b>🔥 Aaj Ki Loot</b>
-                Scanning 1500+ categories for 80% Off deals. Hum aapke liye sabse sasti deals dhoondhte hain!
-            </div>
-            
-            <div class="trust-box box-blue">
-                <b>🛡️ 100% Secure</b>
-                Aapki payment Amazon India handle karta hai. Hum koi bhi personal data save nahi karte.
-            </div>
-
-            <div class="trust-box box-green">
-                <b>✅ Verified Partner</b>
-                Transparency is key: official partner ID=            (sktechnovaworld-21)
-            </div>
-        </div>
-
-        <div style="text-align: center; padding: 10px; opacity: 0.6;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" width="80">
-            <p style="font-size: 9px; margin-top: 5px;">Amazon Associate Program Member</p>
+            <div class="trust-box box-orange"><b>🔥 Aaj Ki Loot</b>80% Off deals! Hum sasti deals dhoondhte hain.</div>
+            <div class="trust-box box-blue"><b>🛡️ 100% Secure</b>Payments Amazon India handle karta hai.</div>
+            <div class="trust-box box-green"><b>✅ Verified Partner</b>Official ID: (sktechnovaworld-21)</div>
+            <div class="trust-box box-yellow"><b>🔔 Price Drop Alerts</b>Hum prices track karte hain!</div>
         </div>
     </div>
 </div>
@@ -114,7 +99,7 @@ homepage.html?tag=sktechnovaworld-21" class="sidebar-item"><i class="fa fa-cogs"
     <a href="https://www.amazon.in/gp/bestsellers/electronics/1389401031/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-mobile-alt"></i></div><span>Mobiles</span></a>
     <a href="https://www.amazon.in/gp/bestsellers/computers/1375424031/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-laptop"></i></div><span>Laptops</span></a>
     <a href="https://www.amazon.in/gp/bestsellers/watches/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-clock"></i></div><span>Watches</span></a>
-    <a href="https://amzn.to/4c8D8IN" class="cat-box"><div class="cat-icon"><i class="fa fa-tags"></i></div><span>Coupons</span></a>
+    <a href="https://www.amazon.in/Coupons?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-tags"></i></div><span>Coupons</span></a>
     <a href="https://www.amazon.in/gp/bestsellers/electronics/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-plug"></i></div><span>Gadgets</span></a>
     <a href="https://www.amazon.in/gp/bestsellers/kitchen/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-utensils"></i></div><span>Kitchen</span></a>
     <a href="https://www.amazon.in/gp/bestsellers/apparel/?tag=sktechnovaworld-21" class="cat-box"><div class="cat-icon"><i class="fa fa-tshirt"></i></div><span>Fashion</span></a>
@@ -128,34 +113,32 @@ homepage.html?tag=sktechnovaworld-21" class="sidebar-item"><i class="fa fa-cogs"
 <div class="section-title">⚡ Under ₹499 Store</div>
 <div class="container" id="row2"></div>
 
-<div class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Back to top</div>
-
 <div class="amz-contact-bar">
-    <a href="tel:180012001571"><i class="fa fa-phone-alt"></i> Call Amazon Help:180012001571 </a>
+    <a href="tel:180012001571"><i class="fa fa-phone-alt"></i> Amazon Customer Care</a>
 </div>
 
 <div class="main-footer">
     <div class="footer-col">
-        <h4>Customer Help</h4>
-        <a href="https://www.amazon.in/gp/help/customer/display.html?tag=sktechnovaworld-21"><i class="fa fa-user"></i> Your Account</a>
-        <a href="https://www.amazon.in/gp/help/customer/contact-us?tag=sktechnovaworld-21"><i class="fa fa-comments"></i> Ai Chat Assistant</a>
-        <a href="javascript:void(0)" onclick="toggleMenu()"><i class="fa fa-info-circle"></i> About skzenvyDeals</a>   <a href="https://www.amazon.in/gp/css
-/order-history?tag=sktechnovaworld-21"><i class="fa fa-truck"></i> Order Tracking</a>
-
+        <h4>Shopping Helpers</h4>
+        <a href="https://www.amazon.in/gp/css/order-history?tag=sktechnovaworld-21"><i class="fa fa-truck"></i> Track Package</a>
+        <a href="https://www.amazon.in/gp/apa/dashboard?tag=sktechnovaworld-21"><i class="fa fa-wallet"></i> Amazon Pay Balance</a>
+        <a href="javascript:void(0)" onclick="toggleMenu()"><i class="fa fa-info-circle"></i> Support Menu</a>
     </div>
     <div class="footer-col">
         <h4>Official Support</h4>
-        <a href="https://wa.me/917991352092"><i class="fab fa-whatsapp"></i> WhatsApp Admin</a>
-        <a href="https://t.me/sktechnovaworld"><i class="fab fa-telegram"></i> Telegram Channel</a>
-        <a href="https://www.amazon.in/gp/help/customer/display.html?tag=sktechnovaworld-21"><i class="fa fa-question-circle"></i> Help Center</a>
+        <a href="https://wa.me/917991352092" target="_blank"><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp Admin</a>
+        <a href="https://t.me/Sachinkumartechno" target="_blank"><i class="fab fa-telegram" style="color: #0088cc;"></i> Join Telegram</a>
+        <a href="https://www.amazon.in/gp/help/customer/display.html?tag=sktechnovaworld-21" target="_blank"><i class="fa fa-question-circle"></i> Help Center</a>
     </div>
 </div>
 
-<div class="footer-bottom"><b>
-<p>
-© <script>document.write(new Date().getFullYear())</script> 
-skzenvyDeals. All rights reserved. | Official Affiliate Store
+<div class="footer-bottom">
+<p style="font-size: 10px; color: #999; padding: 0 15px; text-align: center;">
+    *Prices and availability are accurate as of the date/time indicated and are subject to change.
 </p>
+
+    <b>skzenvyDeals</b><br>© 2026 | Verified Partner
+</div>
 
 <div class="bottom-nav">
     <a href="#" class="nav-item active"><i class="fa fa-home"></i>Home</a>
@@ -172,13 +155,9 @@ skzenvyDeals. All rights reserved. | Official Affiliate Store
         over.style.display = side.classList.contains('active') ? 'block' : 'none';
     }
     document.getElementById('overlay').onclick = toggleMenu;
-
     function shareSite() {
-        const shareText = "🔥 *skzenvyDeals - Loot Deals & Discounts!* 🔥\n\nBhai, is website par Amazon ki sabse sasti deals milti hain. Yahan se order kar, paisa bacha! 💰\n\n👉 *Store Link:* " + window.location.href;
-        const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(shareText);
-        if (navigator.share) {
-            navigator.share({ title: 'skzenvyDeals', text: shareText, url: window.location.href }).catch(() => { window.open(whatsappUrl, '_blank'); });
-        } else { window.open(whatsappUrl, '_blank'); }
+        const shareText = "🔥 *skzenvyDeals - Loot Deals!* 🔥\nBhai, yahan Amazon ki sabse sasti deals milti hain.\n👉 Link: " + window.location.href;
+        window.open("https://wa.me/?text=" + encodeURIComponent(shareText), '_blank');
     }
 </script>
 
@@ -203,7 +182,7 @@ skzenvyDeals. All rights reserved. | Official Affiliate Store
 
   window.handleAuthAction = () => {
     if (!auth.currentUser) signInWithPopup(auth, provider);
-    else if(confirm("Logout?")) signOut(auth).then(() => location.reload());
+    else window.location.href = "https://www.amazon.in/gp/css/homepage.html?tag=sktechnovaworld-21";
   };
 
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
@@ -212,7 +191,6 @@ skzenvyDeals. All rights reserved. | Official Affiliate Store
     let i = 0; snapshot.forEach((doc) => {
       const p = doc.data();
       const html = `<div class="product-card"><img src="${p.image}"><h3>${p.name}</h3><p class="price">₹${p.price}</p><a href="${p.link}" class="amazon-btn" target="_blank">Buy on Amazon ⮕</a></div>`;
-
       if(i % 2 === 0) r1.innerHTML += html; else r2.innerHTML += html;
       i++;
     });
@@ -220,7 +198,7 @@ skzenvyDeals. All rights reserved. | Official Affiliate Store
 
   onAuthStateChanged(auth, (user) => {
     const pBtn = document.getElementById('profileBtn');
-    if (user) pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img"><span>${user.displayName.split(' ')[0]}</span>`;
+    if (user) pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img"><span>Settings</span>`;
     else pBtn.innerHTML = `<i class="fa fa-user-circle"></i>Profile`;
   });
 </script>
