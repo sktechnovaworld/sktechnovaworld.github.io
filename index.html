@@ -64,7 +64,11 @@
         .nav-item.active { color: var(--amz-orange); }
         .nav-item:active { transform: scale(0.9); background: rgba(243, 168, 71, 0.1); border-radius: 8px; }
         .nav-item:active i { color: var(--amz-orange); text-shadow: 0 0 8px rgba(243, 168, 71, 0.8); }
-        .profile-img { width: 22px; height: 22px; border-radius: 50%; display: block; margin: 0 auto 3px; }
+        
+        /* Profile UI */
+        .profile-img { width: 22px; height: 22px; border-radius: 50%; display: block; margin: 0 auto 3px; border: 1px solid var(--amz-orange); }
+        #userMenu { display:none; position: fixed; bottom: 65px; right: 10px; background: white; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); z-index: 2000; width: 200px; padding: 12px; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -74,43 +78,38 @@
     <div class="sidebar-header"><span>Official Menu</span><i class="fa fa-times" onclick="toggleMenu()"></i></div>
     <div class="sidebar-menu">
         <div class="sidebar-item" onclick="location.reload()">
-    <i class="fas fa-sync-alt" style="color: #232f3e;"></i> Refresh All Deals
-</div>
-<div class="sidebar-item" onclick="shareSite()">
-    <i class="fab fa-whatsapp" style="color: #25D366;"></i> Share with Friends
-</div>
-        <div 
-      <div class="trust-box box-yellow">
-    <b>📊 Price Integrity</b>
-    Hum price history verify karte hain taaki aapko hamesha lowest price deal mile.
-   </div>
-    <div class="trust-box box-blue"><b>🛡️ 100% Secure</b>Payments Amazon India handle karta hai.</div>
-  <div class="trust-box box-green">
-    <b>✅ AMAZON AUTHORIZED</b><br>
-    <small>Official Associate ID: sktechnovaworld-21</small>
-    
-    <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 8px 0;">
-    
-    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="width: 55px;">
-        <span style="font-size: 8px; color: #155724; font-weight: bold; border-left: 1px solid rgba(0,0,0,0.1); padding-left: 10px;">
-            OFFICIAL PARTNER
-        </span>
-    </div>
-</div>
-
+            <i class="fas fa-sync-alt" style="color: #232f3e;"></i> Refresh All Deals
+        </div>
+        <div class="sidebar-item" onclick="shareSite()">
+            <i class="fab fa-whatsapp" style="color: #25D366;"></i> Share with Friends
+        </div>
+        <div class="trust-section">
+            <div class="trust-box box-yellow">
+                <b>📊 Price Integrity</b>
+                Hum price history verify karte hain taaki aapko hamesha lowest price deal mile.
+            </div>
+            <div class="trust-box box-blue"><b>🛡️ 100% Secure</b>Payments Amazon India handle karta hai.</div>
+            <div class="trust-box box-green">
+                <b>✅ AMAZON AUTHORIZED</b><br>
+                <small>Official Associate ID: sktechnovaworld-21</small>
+                <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 8px 0;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="width: 55px;">
+                    <span style="font-size: 8px; color: #155724; font-weight: bold; border-left: 1px solid rgba(0,0,0,0.1); padding-left: 10px;">
+                        OFFICIAL PARTNER
+                    </span>
+                </div>
+            </div>
             <div class="trust-box box-orange">
-    <b>💎 Curated Selection</b>
-    Manually verified top-rated deals jo quality aur savings dono ensure karti hain.
-</div>
-
-    <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="width: 80px; opacity: 0.9;">
-        <p style="font-size: 9px; color: #888; margin-top: 5px; font-weight: 500;">
-            Amazon Associate Program Participant
-        </p>
-    </div>
-
+                <b>💎 Curated Selection</b>
+                Manually verified top-rated deals jo quality aur savings dono ensure karti hain.
+            </div>
+            <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="width: 80px; opacity: 0.9;">
+                <p style="font-size: 9px; color: #888; margin-top: 5px; font-weight: 500;">
+                    Amazon Associate Program Participant
+                </p>
+            </div>
         </div>
     </div>
 </div>
@@ -152,10 +151,8 @@
     <div class="footer-col">
         <h4>Shopping Helpers</h4>
         <a href="https://www.amazon.in/gp/css/order-history?tag=sktechnovaworld-21"><i class="fa fa-truck"></i> Track Package</a>
-        <a href="https://www.amazon.in/amazonpay/home?tag=sktechnovaworld"><i class="fa fa-wallet"></i> Amazon Pay Balance</a>
-  <a href="https://www.amazon.in/fresh?tag=sktechnovaworld-21">
-    <i class="fa fa-shopping-basket" style="color: #28a745;"></i> Amazon Grocery (Fresh)
-</a>
+        <a href="https://www.amazon.in/amazonpay/home?tag=sktechnovaworld-21"><i class="fa fa-wallet"></i> Amazon Pay Balance</a>
+        <a href="https://www.amazon.in/fresh?tag=sktechnovaworld-21"><i class="fa fa-shopping-basket" style="color: #28a745;"></i> Amazon Grocery (Fresh)</a>
         <a href="javascript:void(0)" onclick="toggleMenu()"><i class="fa fa-info-circle"></i> Support Menu</a>
     </div>
     <div class="footer-col">
@@ -167,22 +164,27 @@
 </div>
 
 <div class="footer-bottom">
-<p style="font-size: 10px; color: #999; padding: 0 15px; text-align: center;">
-    *Prices and availability are accurate as of the date/time indicated and are subject to change.
-</p>
-
+    <p style="font-size: 10px; color: #999; padding: 0 15px; text-align: center;">
+        *Prices and availability are accurate as of the date/time indicated and are subject to change.
+    </p>
     <b>skzenvyDeals</b><br>© 2026 | Verified Partner
+</div>
+
+<div id="userMenu">
+    <p id="userNameDisplay" style="font-weight:bold; margin-bottom:10px; font-size:14px; color:#333;"></p>
+    <a href="https://www.amazon.in/gp/css/homepage.html?tag=sktechnovaworld-21" style="display:block; padding:10px 0; text-decoration:none; color:#333; font-size:13px; border-top:1px solid #eee;"><i class="fa fa-amazon"></i> Amazon Account</a>
+    <button onclick="logoutUser()" style="width:100%; text-align:left; border:none; background:none; padding:10px 0; color:#d9534f; cursor:pointer; font-size:13px;"><i class="fa fa-sign-out-alt"></i> Logout</button>
 </div>
 
 <div class="bottom-nav">
     <a href="#" class="nav-item active"><i class="fa fa-home"></i>Home</a>
     <a href="https://www.amazon.in/gp/goldbox?tag=sktechnovaworld-21" class="nav-item"><i class="fa fa-bolt"></i>Deals</a>
-    <a href="https://www.amazon.in/?tag=sktechnovaworld-21" class="nav-item"><i class="fa fa-box"></i>Orders</a>
-   <a href="https://www.amazon.in/gp/css/homepage.html?tag=sktechnovaworld-21" class="nav-item">
-    <i class="fa fa-user-circle"></i> Profile
-   </a>
-
+    <a href="https://www.amazon.in/gp/css/order-history?tag=sktechnovaworld-21" class="nav-item"><i class="fa fa-box"></i>Orders</a>
+    <button class="nav-item" id="profileBtn" onclick="handleAuthAction()">
+        <i class="fa fa-user-circle"></i>Profile
+    </button>
 </div>
+
 <script>
     function toggleMenu() {
         const side = document.getElementById('sidebar');
@@ -216,11 +218,33 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
+  // Auth Handling
   window.handleAuthAction = () => {
-    if (!auth.currentUser) signInWithPopup(auth, provider);
-    else window.location.href = "https://www.amazon.in/gp/css/homepage.html?tag=sktechnovaworld-21";
+    if (!auth.currentUser) {
+        signInWithPopup(auth, provider);
+    } else {
+        const menu = document.getElementById('userMenu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
   };
 
+  window.logoutUser = () => {
+    signOut(auth).then(() => {
+        document.getElementById('userMenu').style.display = 'none';
+    });
+  };
+
+  onAuthStateChanged(auth, (user) => {
+    const pBtn = document.getElementById('profileBtn');
+    if (user) {
+        pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img"><span>${user.displayName.split(' ')[0]}</span>`;
+        document.getElementById('userNameDisplay').innerText = "Hi, " + user.displayName;
+    } else {
+        pBtn.innerHTML = `<i class="fa fa-user-circle"></i>Profile`;
+    }
+  });
+
+  // Data Sync
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1'), r2 = document.getElementById('row2');
     r1.innerHTML = ""; r2.innerHTML = "";
@@ -230,12 +254,6 @@
       if(i % 2 === 0) r1.innerHTML += html; else r2.innerHTML += html;
       i++;
     });
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    const pBtn = document.getElementById('profileBtn');
-    if (user) pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img"><span>Settings</span>`;
-    else pBtn.innerHTML = `<i class="fa fa-user-circle"></i>Profile`;
   });
 </script>
 </body>
