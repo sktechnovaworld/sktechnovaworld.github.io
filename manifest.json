@@ -1,0 +1,20 @@
+{
+  "name": "skzenvyDeals Official",
+  "short_name": "skzenvyDeals",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#131921",
+  "theme_color": "#232f3e",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
