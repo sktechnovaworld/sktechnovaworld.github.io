@@ -249,7 +249,7 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  // Auth Handling
+    // Auth Handling
   window.handleAuthAction = () => {
     if (!auth.currentUser) {
         signInWithPopup(auth, provider);
@@ -275,8 +275,8 @@
     }
   });
 
-  //Data Sync Block
-onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
+  // Data Sync Block
+  onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1');
     const r2 = document.getElementById('row2');
     r1.innerHTML = ""; 
@@ -285,8 +285,8 @@ onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
 
     snapshot.forEach((doc) => {
         const p = doc.data();
-       
-       // const html = `
+        
+        const html = `
         <div class="product-card">
             <div class="slider">
                 <img src="${p.image1 || p.image}" class="slide active">
@@ -307,11 +307,11 @@ onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
         }
         i++;
     });
-});
+  });
 </script>
 
-
-</script>
+<script>
+// Service Worker Script
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
