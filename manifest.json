@@ -1,13 +1,14 @@
 {
   "name": "Zivio Deals Official",
   "short_name": "Zivio",
-  "start_url": "index.html",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#131921",
   "theme_color": "#232f3e",
   "icons": [
     {
-     "src": "logo.png",
+      "src": "logo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
@@ -16,4 +17,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-]
+  ]
+}
