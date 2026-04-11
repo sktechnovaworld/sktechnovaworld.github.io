@@ -281,10 +281,12 @@
     r1.innerHTML = ""; r2.innerHTML = "";
     let i = 0; snapshot.forEach((doc) => {
       const p = doc.data();
-      const html = '
-<div class="product-card">
+      const html = `<div class="product-card">
   <div class="slider">
     <img src="${p.image1}" class="slide active">
+    </div>
+</div>`;
+
     <img src="${p.image2}" class="slide">
     <img src="${p.image3}" class="slide">
   </div>
