@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>skzenvyDeals | Official Store</title>
+    <title>ZIVIO| Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --amz-dark: #131921; --amz-blue: #232f3e; --amz-orange: #f3a847; --bg-gray: #f1f3f6; }
@@ -188,7 +188,7 @@
         *Prices and availability are accurate as of the date/time indicated and are subject to change.
     </p>
     <div style="text-align:center; font-size:13px; color:#ccc; margin-top:10px; line-height:1.6;">
-  <b>sk zenvyDeals</b><br>
+  <b>ZIVIO</b><br>
   © 2026 | Amazon Associate Program Participant
 </div>
 
@@ -281,7 +281,21 @@
     r1.innerHTML = ""; r2.innerHTML = "";
     let i = 0; snapshot.forEach((doc) => {
       const p = doc.data();
-      const html = `<div class="product-card"><img src="${p.image}"><h3>${p.name}</h3><p class="price">₹${p.price}</p><a href="${p.link}" class="amazon-btn" target="_blank">Buy on Amazon ⮕</a></div>`;
+      const html = '
+<div class="product-card">
+  <div class="slider">
+    <img src="${p.image1}" class="slide active">
+    <img src="${p.image2}" class="slide">
+    <img src="${p.image3}" class="slide">
+  </div>
+
+  <h3>${p.name}</h3>
+  <p class="price">₹${p.price}</p>
+  <a href="${p.link}" class="amazon-btn" target="_blank">
+    Buy on Amazon ➤
+  </a>
+</div>`;
+
       if(i % 2 === 0) r1.innerHTML += html; else r2.innerHTML += html;
       i++;
     });
