@@ -1,4 +1,4 @@
-const CACHE_NAME = 'skzenvy-v1';
+const CACHE_NAME = 'Zivio-v1';
 const urlsToCache = ['/', '/index.html'];
 
 self.addEventListener('install', event => {
