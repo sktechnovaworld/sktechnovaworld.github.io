@@ -275,7 +275,7 @@
     }
   });
 
-  // Data Sync (Ekdum Sahi Version)
+  //Data Sync Block
 onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1');
     const r2 = document.getElementById('row2');
@@ -283,34 +283,35 @@ onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     r2.innerHTML = "";
     let i = 0; 
 
-    // Data Sync
-  onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
-    const r1 = document.getElementById('row1'), r2 = document.getElementById('row2');
-    r1.innerHTML = ""; r2.innerHTML = "";
-    let i = 0; snapshot.forEach((doc) => {
-      const p = doc.data();
-      const html = '
-<div class="product-card">
-  <div class="slider">
-    <img src="${p.image1}" class="slide active">
-    <img src="${p.image2}" class="slide">
-    <img src="${p.image3}" class="slide">
-  </div>
+    snapshot.forEach((doc) => {
+        const p = doc.data();
+       
+       // const html = `
+        <div class="product-card">
+            <div class="slider">
+                <img src="${p.image1 || p.image}" class="slide active">
+                ${p.image2 ? '<img src="' + p.image2 + '" class="slide">' : ''}
+                ${p.image3 ? '<img src="' + p.image3 + '" class="slide">' : ''}
+            </div>
+            <h3>${p.name}</h3>
+            <p class="price">₹${p.price}</p>
+            <a href="${p.link}" class="amazon-btn" target="_blank">
+                Buy on Amazon ➤
+            </a>
+        </div>`;
 
-  <h3>${p.name}</h3>
-  <p class="price">₹${p.price}</p>
-  <a href="${p.link}" class="amazon-btn" target="_blank">
-    Buy on Amazon ➤
-  </a>
-</div>`;
-
-{p.image}"><h3>${p.name}</h3><p class="price">₹${p.price}</p><a href="${p.link}" class="amazon-btn" target="_blank">Buy on Amazon ⮕</a></div>`;
-      if(i % 2 === 0) r1.innerHTML += html; else r2.innerHTML += html;
-      i++;
+        if (i % 2 === 0) {
+            r1.innerHTML += html;
+        } else {
+            r2.innerHTML += html;
+        }
+        i++;
     });
-  });
+});
+</script>
 
-<script>
+
+</script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
@@ -318,9 +319,9 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('Service Worker Error', err));
   });
 }
-<script>
-
 </script>
 
+
+</script>
 </body>
 </html>
