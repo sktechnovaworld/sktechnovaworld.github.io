@@ -110,7 +110,25 @@
                 Hum price history verify karte hain taaki aapko hamesha lowest price deal mile.
             </div>
             <div class="trust-box box-blue"><b>🛡️ 100% Secure</b>Payments Amazon India handle karta hai.</div>
-                   
+
+<script>
+function addNotification(msg) {
+  let notes = JSON.parse(localStorage.getItem("notifications")) || [];
+  notes.unshift(msg);
+  localStorage.setItem("notifications", JSON.stringify(notes));
+
+  let badge = document.getElementById("badge");
+  if (badge) {
+    badge.style.display = "inline";
+    badge.innerText = notes.length;
+  }
+}
+
+ if (!localStorage.getItem("firstNotification")) {
+  addNotification("🔥 Today's Best Deals on ZIVIO");
+  localStorage.setItem("firstNotification", "done");
+}
+
               <b>💎 Curated Selection</b>
                 Manually verified top-rated deals jo quality aur savings dono ensure karti hain.
             </div>
