@@ -31,17 +31,32 @@ button {
 
 <h2>Notifications</h2>
 
-<div class="note">
-🔥 Today's Best Deals on ZIVIO
-<br>
-<button>Delete</button>
-</div>
+<div id="list"></div>
 
-<div class="note">
-Welcome to ZIVIO 🎉
-<br>
-<button>Delete</button>
-</div>
+<script>
+let notes = JSON.parse(localStorage.getItem("notifications")) || [];
+
+function showNotes() {
+  let html = "";
+  notes.forEach((n, i) => {
+    html += `
+    <div class="note">
+      ${n}
+      <br>
+      <button onclick="del(${i})">Delete</button>
+    </div>`;
+  });
+  document.getElementById("list").innerHTML = html;
+}
+
+function del(i) {
+  notes.splice(i, 1);
+  localStorage.setItem("notifications", JSON.stringify(notes));
+  showNotes();
+}
+
+showNotes();
+</script>
 
 </body>
 </html>
