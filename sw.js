@@ -1,14 +1,9 @@
-const CACHE_NAME = 'Zivio-v1';
-const urlsToCache = ['/', '/index.html'];
+self.addEventListener("notificationclick", function(event) {
+  event.notification.close();
 
-self.addEventListener('install', event => {
+  const url = "https://sktechnovaworld.github.io/deals.html";
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    clients.openWindow(url)
   );
 });
