@@ -1,75 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Notifications - ZIVIO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-body {
-  font-family: Arial;
-  padding: 15px;
-}
-
-.note {
-  background: #f1f1f1;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-}
-
-button {
-  margin-top: 5px;
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-}
-</style>
+<title>Notifications</title>
 </head>
 
 <body>
 
-<h2>Notifications</h2>
-
-<div id="list"></div>
-
-<script>
-function loadNotes() {
-  let notes =
-  JSON.parse(localStorage.getItem("notifications")) || [];
-
-  let html = "";
-
-  notes.forEach((n, i) => {
-    html += `
-    <div class="note">
-      ${n}
-      <br>
-      <button onclick="delNote(${i})">
-        Delete
-      </button>
-    </div>`;
-  });
-
-  document.getElementById("list").innerHTML = html;
-}
-
-function delNote(i) {
-  let notes =
-  JSON.parse(localStorage.getItem("notifications")) || [];
-
-  notes.splice(i, 1);
-
-  localStorage.setItem(
-    "notifications",
-    JSON.stringify(notes)
-  );
-
-  loadNotes();
-}
-
-loadNotes();
-</script>
+<h2>Notifications Page Working</h2>
 
 </body>
 </html>
