@@ -1,4 +1,4 @@
-const CACHE_NAME = 'Zivio-v2';
+const CACHE_NAME = 'Zivio-v3';
 
 self.addEventListener("notificationclick", function(event) {
   event.notification.close();
