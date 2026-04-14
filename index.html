@@ -234,6 +234,29 @@
   import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+import { getAuth, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+const auth = getAuth();
+
+onAuthStateChanged(auth, (user) => {
+
+  // Agar login nahi hai
+  if (!user) {
+    alert("Login required");
+    window.location.href = "/";
+    return;
+  }
+
+  // Sirf admin email allowed
+  if (user.email !== "sktechnovaworld@gmail.com") {
+    alert("Access denied");
+    window.location.href = "/";
+    return;
+  }
+
+});
+
   const firebaseConfig = {
     apiKey: "AIzaSyAn6ZbXchQxx5g93K0lCu5sULPBu-0jnFc",
   authDomain: "zivio-5cb97.firebaseapp.com",
