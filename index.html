@@ -274,6 +274,23 @@
     }
   });
 
+import { doc, setDoc, serverTimestamp } from 
+"https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+      loginTime: serverTimestamp()
+    });
+
+    console.log("User data saved");
+  }
+});
+
   // Data Sync Block
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1');
