@@ -274,6 +274,41 @@
     }
   });
 
+import { doc, setDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+
+  const pBtn = document.getElementById('profileBtn');
+
+  if (user) {
+
+    // Profile UI
+    pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img">
+    <span>${user.displayName.split(' ')[0]}</span>`;
+
+    document.getElementById('userNameDisplay').innerText =
+      "Hi, " + user.displayName;
+
+    // SAVE user data to Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+      loginTime: serverTimestamp()
+    });
+
+    console.log("User data saved to database");
+
+  } else {
+
+    pBtn.innerHTML =
+      `<i class="fa fa-user-circle"></i>Profile`;
+
+  }
+
+});
+
   // Data Sync Block
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
     const r1 = document.getElementById('row1');
