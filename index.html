@@ -292,11 +292,12 @@ onAuthStateChanged(auth, async (user) => {
 
     // SAVE user data to Firestore
     await setDoc(doc(db, "users", user.uid), {
-      name: user.displayName,
-      email: user.email,
-      photo: user.photoURL,
-      loginTime: serverTimestamp()
-    });
+  name: user.displayName || "No Name",
+  email: user.email || "No Email",
+  photo: user.photoURL || "",
+  loginTime: serverTimestamp()
+});
+      
 
     console.log("User data saved to database");
 
