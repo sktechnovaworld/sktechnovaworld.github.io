@@ -277,20 +277,20 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
     }
   });
 
-import { doc, setDoc, serverTimestamp } from 
-"https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
 
-    await setDoc(doc(db, "users", user.uid), {
-      name: user.displayName,
-      email: user.email,
-      photo: user.photoURL,
-      loginTime: serverTimestamp()
+    // Existing code (profile etc.)
+
+    // NEW: Send data to Google Analytics
+    gtag('event', 'login_user', {
+      user_name: user.displayName,
+      user_email: user.email,
+      login_time: new Date().toLocaleString()
     });
 
-    console.log("User data saved");
+    console.log("Login event sent to Analytics");
+
   }
 });
 
