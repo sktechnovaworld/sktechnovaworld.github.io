@@ -291,17 +291,22 @@ onAuthStateChanged(auth, async (user) => {
       "Hi, " + user.displayName;
 
     // SAVE user data to Firestore
-    await setDoc(doc(db, "users", user.uid), {
+    // Ensure latest user data
+await user.reload();
+
+const email =
+  user.email ||
+  user.providerData[0]?.email ||
+  "No Email";
+
+await setDoc(doc(db, "users", user.uid), {
   name: user.displayName || "No Name",
-  email: user.email || "No Email",
+  email: email,
   photo: user.photoURL || "",
   loginTime: serverTimestamp()
 });
-      
 
-    console.log("User data saved to database");
-
-  } else {
+console.log("User data saved with email:", email);
 
     pBtn.innerHTML =
       `<i class="fa fa-user-circle"></i>Profile`;
