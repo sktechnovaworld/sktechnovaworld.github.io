@@ -234,9 +234,6 @@
   import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { getAuth, onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
   const firebaseConfig = {
     apiKey: "AIzaSyAn6ZbXchQxx5g93K0lCu5sULPBu-0jnFc",
   authDomain: "zivio-5cb97.firebaseapp.com",
@@ -276,23 +273,6 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         pBtn.innerHTML = `<i class="fa fa-user-circle"></i>Profile`;
     }
   });
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-
-    // Existing code (profile etc.)
-
-    // NEW: Send data to Google Analytics
-    gtag('event', 'login_user', {
-      user_name: user.displayName,
-      user_email: user.email,
-      login_time: new Date().toLocaleString()
-    });
-
-    console.log("Login event sent to Analytics");
-
-  }
-});
 
   // Data Sync Block
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
