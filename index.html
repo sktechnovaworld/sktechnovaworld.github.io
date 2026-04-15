@@ -248,11 +248,29 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
+provider.addScope('email');
+
+provider.setCustomParameters({
+  prompt: "select_account"
+});
+
     // Auth Handling
   window.handleAuthAction = () => {
     if (!auth.currentUser) {
-        signInWithPopup(auth, provider);
-    } else {
+
+  signInWithPopup(auth, provider)
+    .then((result) => {
+
+      const user = result.user;
+
+      console.log("User email:", user.email);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+}
         const menu = document.getElementById('userMenu');
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
