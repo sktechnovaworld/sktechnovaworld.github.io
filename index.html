@@ -322,8 +322,9 @@ onAuthStateChanged(auth, async (user) => {
 await user.reload();
 
 const email =
-  user.email ||
-  user.providerData[0]?.email ||
+  user.email ??
+  user.providerData?.[0]?.email ??
+  auth.currentUser?.email ??
   "No Email";
 
 await setDoc(doc(db, "users", user.uid), {
