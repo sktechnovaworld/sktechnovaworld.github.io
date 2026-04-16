@@ -254,27 +254,36 @@ provider.setCustomParameters({
   prompt: "select_account"
 });
 
-    // Auth Handling
-  window.handleAuthAction = () => {
-    if (!auth.currentUser) {
+    window.handleAuthAction = () => {
 
-  signInWithPopup(auth, provider)
-    .then((result) => {
+  if (!auth.currentUser) {
 
-      const user = result.user;
+    signInWithPopup(auth, provider)
+      .then((result) => {
 
-      console.log("User email:", user.email);
+        const user = result.user;
 
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        console.log("Login success");
+        console.log("User email:", user.email);
 
-}
-        const menu = document.getElementById('userMenu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-  };
+      })
+      .catch((error) => {
+        console.log("Login error:", error);
+      });
+
+  } else {
+
+    const menu =
+      document.getElementById('userMenu');
+
+    menu.style.display =
+      menu.style.display === 'block'
+        ? 'none'
+        : 'block';
+
+  }
+
+};
 
   window.logoutUser = () => {
     signOut(auth).then(() => {
