@@ -253,38 +253,7 @@ provider.addScope('email');
 provider.setCustomParameters({
   prompt: "select_account"
 });
-
-    window.handleAuthAction = () => {
-
-  if (!auth.currentUser) {
-
-    signInWithPopup(auth, provider)
-  .then(async (result) => {
-
-    const user = result.user;
-
-    await user.reload();
-
-    const email =
-      result.user.email ||
-      result.user.providerData[0]?.email ||
-      auth.currentUser?.email ||
-      "No Email";
-
-    await setDoc(doc(db, "users", user.uid), {
-      name: user.displayName || "No Name",
-      email: email,
-      photo: user.photoURL || "",
-      loginTime: serverTimestamp()
-    }, { merge: true });
-
-    console.log("User email check:", email);
-
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-
+   
   window.logoutUser = () => {
     signOut(auth).then(() => {
         document.getElementById('userMenu').style.display = 'none';
