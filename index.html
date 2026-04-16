@@ -259,31 +259,31 @@ provider.setCustomParameters({
   if (!auth.currentUser) {
 
     signInWithPopup(auth, provider)
-      .then((result) => {
+  .then(async (result) => {
 
-        const user = result.user;
+    const user = result.user;
 
-        console.log("Login success");
-        console.log("User email:", user.email);
+    await user.reload();
 
-      })
-      .catch((error) => {
-        console.log("Login error:", error);
-      });
+    const email =
+      result.user.email ||
+      result.user.providerData[0]?.email ||
+      auth.currentUser?.email ||
+      "No Email";
 
-  } else {
+    await setDoc(doc(db, "users", user.uid), {
+      name: user.displayName || "No Name",
+      email: email,
+      photo: user.photoURL || "",
+      loginTime: serverTimestamp()
+    }, { merge: true });
 
-    const menu =
-      document.getElementById('userMenu');
+    console.log("User email check:", email);
 
-    menu.style.display =
-      menu.style.display === 'block'
-        ? 'none'
-        : 'block';
-
-  }
-
-};
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
   window.logoutUser = () => {
     signOut(auth).then(() => {
