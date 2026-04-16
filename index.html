@@ -328,11 +328,12 @@ const email =
   "No Email";
 
 await setDoc(doc(db, "users", user.uid), {
+console.log("User email check:", email);
   name: user.displayName || "No Name",
   email: email,
   photo: user.photoURL || "",
   loginTime: serverTimestamp()
-});
+}, { merge: true });
 
 console.log("User data saved with email:", email);
 
