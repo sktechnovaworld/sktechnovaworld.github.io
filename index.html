@@ -319,12 +319,13 @@ onAuthStateChanged(auth, async (user) => {
 
     // SAVE user data to Firestore
     // Ensure latest user data
-await user.reload();
+const user = result.user
 
 const email =
-  user.email ??
-  user.providerData?.[0]?.email ??
-  auth.currentUser?.email ??
+  user.email ||
+  user.providerData?.[0]?.email ||
+  result.user.email ||
+  auth.currentUser?.email ||
   "No Email";
 
 await setDoc(doc(db, "users", user.uid), {
@@ -335,8 +336,6 @@ await setDoc(doc(db, "users", user.uid), {
 }, { merge: true });
 
 console.log("User email check:", email);
-
-console.log("User data saved with email:", email);
 
     pBtn.innerHTML =
       `<i class="fa fa-user-circle"></i>Profile`;
