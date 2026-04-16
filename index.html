@@ -318,7 +318,6 @@ onAuthStateChanged(auth, async (user) => {
       "Hi, " + user.displayName;
 
     // SAVE user data to Firestore
-    // Ensure latest user data
 const user = result.user;
 
 const email =
@@ -334,7 +333,6 @@ await setDoc(doc(db, "users", user.uid), {
   photo: user.photoURL || "",
   loginTime: serverTimestamp()
 }, { merge: true });
-
 console.log("User email check:", email);
 
     pBtn.innerHTML =
