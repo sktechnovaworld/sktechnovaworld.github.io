@@ -248,12 +248,16 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-provider.addScope('email');
+    // Auth Handling
+  window.handleAuthAction = () => {
+    if (!auth.currentUser) {
+        signInWithPopup(auth, provider);
+    } else {
+        const menu = document.getElementById('userMenu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+  };
 
-provider.setCustomParameters({
-  prompt: "select_account"
-});
-   
   window.logoutUser = () => {
     signOut(auth).then(() => {
         document.getElementById('userMenu').style.display = 'none';
@@ -269,47 +273,6 @@ provider.setCustomParameters({
         pBtn.innerHTML = `<i class="fa fa-user-circle"></i>Profile`;
     }
   });
-
-import { doc, setDoc, serverTimestamp }
-from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-onAuthStateChanged(auth, async (user) => {
-
-  const pBtn = document.getElementById('profileBtn');
-
-  if (user) {
-
-    // Profile UI
-    pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img">
-    <span>${user.displayName.split(' ')[0]}</span>`;
-
-    document.getElementById('userNameDisplay').innerText =
-      "Hi, " + user.displayName;
-
-    // SAVE user data to Firestore
-const user = result.user;
-
-const email =
-  user.email ||
-  user.providerData?.[0]?.email ||
-  result.user.email ||
-  auth.currentUser?.email ||
-  "No Email";
-
-await setDoc(doc(db, "users", user.uid), {
-  name: user.displayName || "No Name",
-  email: email,
-  photo: user.photoURL || "",
-  loginTime: serverTimestamp()
-}, { merge: true });
-console.log("User email check:", email);
-
-    pBtn.innerHTML =
-      `<i class="fa fa-user-circle"></i>Profile`;
-
-  }
-
-});
 
   // Data Sync Block
   onSnapshot(query(collection(db, "products"), orderBy("name")), (snapshot) => {
