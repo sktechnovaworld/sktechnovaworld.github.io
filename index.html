@@ -1,2 +1,150 @@
-sachin Kumar 
-New work in progress 🚀
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sachin Kumar | Deep Space Mission</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        body, html {
+            margin: 0; padding: 0; background: #00040a;
+            color: white; font-family: 'Orbitron', sans-serif;
+            overflow: hidden; height: 100vh; width: 100vw;
+        }
+
+        /* Twinkling Stars Background */
+        #space { position: absolute; width: 100%; height: 100%; z-index: 0; }
+        .star { 
+            position: absolute; background: white; border-radius: 50%; 
+            animation: twinkle var(--duration) infinite ease-in-out; 
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+
+        /* HEADER */
+        .header { position: absolute; top: 20px; width: 100%; text-align: center; z-index: 20; }
+        h1 { font-size: 2.2rem; color: #00ffff; text-shadow: 0 0 20px #00f2fe; margin: 0; }
+        .wip { color: #ff9900; font-size: 0.8rem; letter-spacing: 5px; margin-top: 5px; }
+
+        /* ENVIRONMENT */
+        .earth {
+            position: absolute; bottom: -220px; left: 50%; transform: translateX(-50%);
+            width: 1000px; height: 400px; background: radial-gradient(circle at center, #0e2a47, #000);
+            border-radius: 50%; z-index: 2; box-shadow: 0 -10px 50px rgba(0, 150, 255, 0.2);
+        }
+        .moon {
+            position: absolute; top: 120px; right: 10%; width: 180px; height: 180px;
+            background: radial-gradient(circle at 30% 30%, #ddd, #222);
+            border-radius: 50%; z-index: 1;
+        }
+
+        /* STAND (Dharti Par) */
+        .stand {
+            position: absolute; bottom: 120px; left: 15%;
+            width: 15px; height: 150px; background: #222; z-index: 3;
+            transform: translateX(-50%); border-left: 2px solid #444;
+        }
+        .arm { position: absolute; width: 40px; height: 6px; background: #333; left: 10px; bottom: 50px; border-radius: 2px; }
+
+        /* ROCKET SYSTEM */
+        .rocket-part { position: absolute; left: 15%; transform: translateX(-50%); z-index: 5; }
+
+        /* Booster: 80% raste tak ship ke sath rahega */
+        .booster {
+            bottom: 130px; width: 22px; height: 75px;
+            background: linear-gradient(90deg, #888, #fff, #888);
+            border-radius: 2px;
+            animation: boosterOrbit 25s infinite ease-in-out;
+        }
+
+        /* Ship: Booster ke upar chipka rahega separation tak */
+        .ship {
+            bottom: 205px; width: 22px; height: 45px;
+            background: #fff; border-radius: 50% 50% 2px 2px;
+            animation: shipOrbit 25s infinite ease-in-out;
+        }
+
+        /* HERO & FLAG */
+        .hero {
+            position: absolute; top: 0; left: 25px; opacity: 0;
+            animation: moonAction 25s infinite;
+        }
+        .man { width: 10px; height: 16px; background: #eee; border-radius: 2px; }
+        .flag {
+            width: 16px; height: 10px; 
+            background: linear-gradient(#FF9933 33%, #FFF 33%, #FFF 66%, #138808 66%);
+            border: 0.2px solid #000; position: absolute; top: -5px; left: 12px;
+        }
+
+        /* FIRE EFFECTS */
+        .fire { width: 15px; height: 40px; background: linear-gradient(#ffaa00, transparent); margin: 0 auto; animation: flamePulse 0.1s infinite; }
+        .b-fire { position: absolute; bottom: -40px; left: 3.5px; animation: bFire 25s infinite; }
+        .s-fire { position: absolute; bottom: -40px; left: 3.5px; opacity: 0; animation: sFire 25s infinite; }
+
+        /* --- KEYFRAMES (THE PHYSICS) --- */
+
+        /* Booster: 0% to 50% (Together) -> 50% to 60% (Late Split) -> Return */
+        @keyframes boosterOrbit {
+            0% { bottom: 130px; left: 15%; transform: translateX(-50%) rotate(0deg); }
+            50% { bottom: 450px; left: 40%; transform: translateX(-50%) rotate(0deg); } /* Pura ek sath yahan tak */
+            60% { bottom: 480px; left: 45%; transform: translateX(-50%) rotate(180deg); } /* Separation starts very late */
+            85%, 100% { bottom: 130px; left: 15%; transform: translateX(-50%) rotate(0deg); } /* Back to Stand */
+        }
+
+        /* Ship: Continues to Moon after split */
+        @keyframes shipOrbit {
+            0% { bottom: 205px; left: 15%; }
+            50% { bottom: 525px; left: 40%; } /* Sync with booster */
+            75%, 95% { bottom: 240px; left: calc(90% - 110px); } /* Land on Moon */
+            100% { opacity: 0; }
+        }
+
+        @keyframes moonAction { 0%, 80% { opacity: 0; } 90%, 95% { opacity: 1; transform: translateX(25px); } }
+        @keyframes bFire { 0%, 84% { opacity: 1; } 85%, 100% { opacity: 0; } }
+        @keyframes sFire { 0%, 50% { opacity: 0; } 51%, 74% { opacity: 1; } 75%, 100% { opacity: 0; } }
+        @keyframes flamePulse { 50% { height: 55px; transform: scaleX(1.1); } }
+
+    </style>
+</head>
+<body>
+
+    <div id="space"></div>
+
+    <div class="header">
+        <h1>SACHIN KUMAR DEVELOPER</h1>
+        <div class="wip">● SPACE WORK IN PROGRESS ●</div>
+    </div>
+
+    <div class="earth"></div>
+    <div class="moon"></div>
+    <div class="stand"><div class="arm"></div></div>
+
+    <div class="rocket-part booster">
+        <div class="fire b-fire"></div>
+    </div>
+
+    <div class="rocket-part ship">
+        <div class="hero">
+            <div class="man"></div>
+            <div class="flag"></div>
+        </div>
+        <div class="fire s-fire"></div>
+    </div>
+
+    <script>
+        const space = document.getElementById('space');
+        const starCount = 200;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+            space.appendChild(star);
+        }
+    </script>
+</body>
+</html>
