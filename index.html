@@ -1,150 +1,291 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sachin Kumar | Deep Space Mission</title>
+    <title>⚡ Yulu-Style EV Rental Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-
-        body, html {
-            margin: 0; padding: 0; background: #00040a;
-            color: white; font-family: 'Orbitron', sans-serif;
-            overflow: hidden; height: 100vh; width: 100vw;
-        }
-
-        /* Twinkling Stars Background */
-        #space { position: absolute; width: 100%; height: 100%; z-index: 0; }
-        .star { 
-            position: absolute; background: white; border-radius: 50%; 
-            animation: twinkle var(--duration) infinite ease-in-out; 
-        }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
-
-        /* HEADER */
-        .header { position: absolute; top: 20px; width: 100%; text-align: center; z-index: 20; }
-        h1 { font-size: 2.2rem; color: #00ffff; text-shadow: 0 0 20px #00f2fe; margin: 0; }
-        .wip { color: #ff9900; font-size: 0.8rem; letter-spacing: 5px; margin-top: 5px; }
-
-        /* ENVIRONMENT */
-        .earth {
-            position: absolute; bottom: -220px; left: 50%; transform: translateX(-50%);
-            width: 1000px; height: 400px; background: radial-gradient(circle at center, #0e2a47, #000);
-            border-radius: 50%; z-index: 2; box-shadow: 0 -10px 50px rgba(0, 150, 255, 0.2);
-        }
-        .moon {
-            position: absolute; top: 120px; right: 10%; width: 180px; height: 180px;
-            background: radial-gradient(circle at 30% 30%, #ddd, #222);
-            border-radius: 50%; z-index: 1;
-        }
-
-        /* STAND (Dharti Par) */
-        .stand {
-            position: absolute; bottom: 120px; left: 15%;
-            width: 15px; height: 150px; background: #222; z-index: 3;
-            transform: translateX(-50%); border-left: 2px solid #444;
-        }
-        .arm { position: absolute; width: 40px; height: 6px; background: #333; left: 10px; bottom: 50px; border-radius: 2px; }
-
-        /* ROCKET SYSTEM */
-        .rocket-part { position: absolute; left: 15%; transform: translateX(-50%); z-index: 5; }
-
-        /* Booster: 80% raste tak ship ke sath rahega */
-        .booster {
-            bottom: 130px; width: 22px; height: 75px;
-            background: linear-gradient(90deg, #888, #fff, #888);
-            border-radius: 2px;
-            animation: boosterOrbit 25s infinite ease-in-out;
-        }
-
-        /* Ship: Booster ke upar chipka rahega separation tak */
-        .ship {
-            bottom: 205px; width: 22px; height: 45px;
-            background: #fff; border-radius: 50% 50% 2px 2px;
-            animation: shipOrbit 25s infinite ease-in-out;
-        }
-
-        /* HERO & FLAG */
-        .hero {
-            position: absolute; top: 0; left: 25px; opacity: 0;
-            animation: moonAction 25s infinite;
-        }
-        .man { width: 10px; height: 16px; background: #eee; border-radius: 2px; }
-        .flag {
-            width: 16px; height: 10px; 
-            background: linear-gradient(#FF9933 33%, #FFF 33%, #FFF 66%, #138808 66%);
-            border: 0.2px solid #000; position: absolute; top: -5px; left: 12px;
-        }
-
-        /* FIRE EFFECTS */
-        .fire { width: 15px; height: 40px; background: linear-gradient(#ffaa00, transparent); margin: 0 auto; animation: flamePulse 0.1s infinite; }
-        .b-fire { position: absolute; bottom: -40px; left: 3.5px; animation: bFire 25s infinite; }
-        .s-fire { position: absolute; bottom: -40px; left: 3.5px; opacity: 0; animation: sFire 25s infinite; }
-
-        /* --- KEYFRAMES (THE PHYSICS) --- */
-
-        /* Booster: 0% to 50% (Together) -> 50% to 60% (Late Split) -> Return */
-        @keyframes boosterOrbit {
-            0% { bottom: 130px; left: 15%; transform: translateX(-50%) rotate(0deg); }
-            50% { bottom: 450px; left: 40%; transform: translateX(-50%) rotate(0deg); } /* Pura ek sath yahan tak */
-            60% { bottom: 480px; left: 45%; transform: translateX(-50%) rotate(180deg); } /* Separation starts very late */
-            85%, 100% { bottom: 130px; left: 15%; transform: translateX(-50%) rotate(0deg); } /* Back to Stand */
-        }
-
-        /* Ship: Continues to Moon after split */
-        @keyframes shipOrbit {
-            0% { bottom: 205px; left: 15%; }
-            50% { bottom: 525px; left: 40%; } /* Sync with booster */
-            75%, 95% { bottom: 240px; left: calc(90% - 110px); } /* Land on Moon */
-            100% { opacity: 0; }
-        }
-
-        @keyframes moonAction { 0%, 80% { opacity: 0; } 90%, 95% { opacity: 1; transform: translateX(25px); } }
-        @keyframes bFire { 0%, 84% { opacity: 1; } 85%, 100% { opacity: 0; } }
-        @keyframes sFire { 0%, 50% { opacity: 0; } 51%, 74% { opacity: 1; } 75%, 100% { opacity: 0; } }
-        @keyframes flamePulse { 50% { height: 55px; transform: scaleX(1.1); } }
-
+        body { background-color: #f1f5f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: #0284c7; }
+        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .badge-available { background-color: #10b981; }
+        .badge-rented { background-color: #f59e0b; }
     </style>
 </head>
 <body>
 
-    <div id="space"></div>
-
-    <div class="header">
-        <h1>SACHIN KUMAR DEVELOPER</h1>
-        <div class="wip">● SPACE WORK IN PROGRESS ●</div>
-    </div>
-
-    <div class="earth"></div>
-    <div class="moon"></div>
-    <div class="stand"><div class="arm"></div></div>
-
-    <div class="rocket-part booster">
-        <div class="fire b-fire"></div>
-    </div>
-
-    <div class="rocket-part ship">
-        <div class="hero">
-            <div class="man"></div>
-            <div class="flag"></div>
+    <nav class="navbar navbar-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">⚡ EV Rental Hub (Weekly Rent)</span>
+            <span class="text-light fs-6">Delivery Partner System</span>
         </div>
-        <div class="fire s-fire"></div>
+    </nav>
+
+    <div class="container pb-5">
+        
+        <!-- Top Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card card-custom p-3 bg-primary text-white">
+                    <h6>Total Fleet</h6>
+                    <h3 id="stat-total">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 bg-warning text-dark">
+                    <h6>Active Rentals</h6>
+                    <h3 id="stat-rented">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 bg-success text-white">
+                    <h6>Available Bikes</h6>
+                    <h3 id="stat-available">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom p-3 bg-dark text-white">
+                    <h6>Total Onboarded Riders</h6>
+                    <h3 id="stat-riders">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Left Side: Forms -->
+            <div class="col-lg-5">
+                
+                <!-- Rider Full KYC Registration Form -->
+                <div class="card card-custom p-4 mb-4">
+                    <h4 class="mb-3 text-primary">📝 Rider Onboarding / KYC</h4>
+                    <form id="onboardForm">
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" id="regName" class="form-control form-control-sm" placeholder="Rider Name" required>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Mobile No.</label>
+                                <input type="tel" id="regPhone" class="form-control form-control-sm" placeholder="10-digit" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Emergency Contact</label>
+                                <input type="tel" id="regEmergency" class="form-control form-control-sm" placeholder="Family/Friend" required>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Aadhaar Number</label>
+                                <input type="text" id="regAadhaar" class="form-control form-control-sm" placeholder="12-digit" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">DL Number</label>
+                                <input type="text" id="regDL" class="form-control form-control-sm" placeholder="DL Number" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Delivery Platform</label>
+                            <select id="regPlatform" class="form-select form-select-sm" required>
+                                <option value="Blinkit">Blinkit</option>
+                                <option value="Zomato">Zomato</option>
+                                <option value="Swiggy">Swiggy</option>
+                                <option value="Zepto">Zepto</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Assign EV Bike</label>
+                            <select id="bikeSelect" class="form-select form-select-sm" required></select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Register & Issue Bike</button>
+                    </form>
+                </div>
+
+                <!-- Weekly Rent Pay -->
+                <div class="card card-custom p-4">
+                    <h4 class="mb-3 text-success">💳 Weekly Rent Pay (UPI)</h4>
+                    <form id="payForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Select Active Rider / Bike</label>
+                            <select id="rentedBikeSelect" class="form-select" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Weekly Amount (₹)</label>
+                            <input type="number" id="payAmount" class="form-control" placeholder="₹1200" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">Collect Weekly Rent</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Dashboard Tables -->
+            <div class="col-lg-7">
+                
+                <!-- Live Bike Fleet Table -->
+                <div class="card card-custom p-4 mb-4">
+                    <h4 class="mb-3">🛵 Live Bike Status</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Bike ID</th>
+                                    <th>Model</th>
+                                    <th>Weekly Rent</th>
+                                    <th>Status</th>
+                                    <th>Assigned To</th>
+                                    <th>Weekly Due</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fleetTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Complete Onboarded Riders Database -->
+                <div class="card card-custom p-4">
+                    <h4 class="mb-3">👥 Rider Master Data (KYC Records)</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered align-middle" style="font-size: 13px;">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Name & Phone</th>
+                                    <th>Aadhaar / DL</th>
+                                    <th>Work Platform</th>
+                                    <th>Emergency</th>
+                                    <th>Assigned EV</th>
+                                </tr>
+                            </thead>
+                            <tbody id="riderTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
     <script>
-        const space = document.getElementById('space');
-        const starCount = 200;
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2 + 1 + 'px';
-            star.style.width = size;
-            star.style.height = size;
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-            space.appendChild(star);
+        async function loadData() {
+            try {
+                const res = await fetch('/api/bikes');
+                const data = await res.json();
+                
+                const bikes = data.bikes;
+                const riders = data.riders;
+
+                // Stats
+                document.getElementById('stat-total').innerText = bikes.length;
+                document.getElementById('stat-rented').innerText = bikes.filter(b => b.status === 'Rented').length;
+                document.getElementById('stat-available').innerText = bikes.filter(b => b.status === 'Available').length;
+                document.getElementById('stat-riders').innerText = riders.length;
+
+                // Dropdowns
+                const bikeSelect = document.getElementById('bikeSelect');
+                const availBikes = bikes.filter(b => b.status === 'Available');
+                bikeSelect.innerHTML = availBikes.length > 0 
+                    ? availBikes.map(b => `<option value="${b.id}">${b.id} - ${b.model} (₹${b.weeklyRent}/week)</option>`).join('')
+                    : `<option value="">No bikes available</option>`;
+
+                const rentedBikeSelect = document.getElementById('rentedBikeSelect');
+                const rentedBikes = bikes.filter(b => b.status === 'Rented');
+                rentedBikeSelect.innerHTML = rentedBikes.length > 0
+                    ? rentedBikes.map(b => `<option value="${b.id}">${b.id} - ${b.rider} (Due: ₹${b.weeklyDue})</option>`).join('')
+                    : `<option value="">No active rentals</option>`;
+
+                // Fleet Table
+                document.getElementById('fleetTable').innerHTML = bikes.map(b => `
+                    <tr>
+                        <td><strong>${b.id}</strong></td>
+                        <td>${b.model}</td>
+                        <td>₹${b.weeklyRent}</td>
+                        <td><span class="badge ${b.status === 'Available' ? 'badge-available' : 'badge-rented'}">${b.status}</span></td>
+                        <td>${b.rider || '-'}</td>
+                        <td class="text-danger fw-bold">₹${b.weeklyDue}</td>
+                        <td>
+                            ${b.status === 'Rented' ? `<button onclick="returnBike('${b.id}')" class="btn btn-sm btn-outline-danger py-0">Return</button>` : '-'}
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Rider KYC Master Table
+                document.getElementById('riderTable').innerHTML = riders.map(r => `
+                    <tr>
+                        <td><strong>${r.name}</strong><br><small>${r.phone}</small></td>
+                        <td>${r.aadhaar}<br><small class="text-muted">DL: ${r.dl}</small></td>
+                        <td><span class="badge bg-info text-dark">${r.platform}</span></td>
+                        <td>${r.emergency}</td>
+                        <td><strong>${r.bikeId || 'None'}</strong></td>
+                    </tr>
+                `).join('');
+
+            } catch (err) {
+                console.error("Error loading data:", err);
+            }
         }
+
+        // Register Rider Form Submit
+        document.getElementById('onboardForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('regName').value,
+                phone: document.getElementById('regPhone').value,
+                emergency: document.getElementById('regEmergency').value,
+                aadhaar: document.getElementById('regAadhaar').value,
+                dl: document.getElementById('regDL').value,
+                platform: document.getElementById('regPlatform').value,
+                bikeId: document.getElementById('bikeSelect').value
+            };
+
+            if(!payload.bikeId) return alert('Kripya EV Bike Select karein!');
+
+            const res = await fetch('/api/register-rider', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            alert(result.message);
+            document.getElementById('onboardForm').reset();
+            loadData();
+        });
+
+        // Pay Weekly Rent
+        document.getElementById('payForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const bikeId = document.getElementById('rentedBikeSelect').value;
+            const amount = document.getElementById('payAmount').value;
+
+            const res = await fetch('/api/pay-weekly-rent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ bikeId, amount })
+            });
+            const result = await res.json();
+            alert(result.message);
+            document.getElementById('payForm').reset();
+            loadData();
+        });
+
+        // Return Bike
+        async function returnBike(bikeId) {
+            if (confirm('Kya aap is bike ko return mark karke status free karna chahte hain?')) {
+                const res = await fetch('/api/return-bike', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bikeId })
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadData();
+            }
+        }
+
+        loadData();
     </script>
 </body>
 </html>
