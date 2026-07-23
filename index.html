@@ -3,189 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ EV Rental - Rider Account Portal</title>
+    <title>⚡ Real EV Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .auth-card { max-width: 400px; margin: 80px auto; border-radius: 12px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .dashboard-card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    </style>
 </head>
-<body>
+<body class="bg-light">
 
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">⚡ EV Fleet Portal</span>
-            <button id="logoutBtn" onclick="logout()" class="btn btn-outline-light btn-sm d-none">Logout</button>
+            <span class="navbar-brand fw-bold">⚡ EV Fleet Portal</span>
+            <button id="logoutBtn" onclick="location.reload()" class="btn btn-outline-light btn-sm d-none">Logout</button>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-5">
         
-        <!-- SECTION 1: MOBILE NUMBER + OTP LOGIN -->
-        <div id="loginSection" class="card auth-card p-4">
+        <!-- LOGIN BOX -->
+        <div id="loginCard" class="card mx-auto p-4 shadow-sm" style="max-width: 400px; border-radius: 12px;">
             <h4 class="text-center mb-3">📱 Rider Login</h4>
-            <p class="text-muted text-center small">Apna registered mobile number daal kar login karein</p>
             
-            <!-- Step A: Enter Mobile Number -->
-            <div id="phoneStep">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Mobile Number</label>
-                    <input type="tel" id="userPhone" class="form-control" placeholder="10 Digit Mobile No." required>
-                </div>
-                <button onclick="sendOTP()" class="btn btn-primary w-100 fw-bold">Send OTP</button>
+            <div id="phoneGroup">
+                <label class="form-label">Mobile Number</label>
+                <input type="tel" id="phoneInput" class="form-control mb-3" placeholder="Enter Registered Phone No.">
+                <button onclick="requestOTP()" class="btn btn-primary w-100">Send Real OTP</button>
             </div>
 
-            <!-- Step B: Enter OTP -->
-            <div id="otpStep" class="d-none">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Enter OTP</label>
-                    <input type="number" id="userOTP" class="form-control" placeholder="4-Digit OTP (Test: 1234)" required>
-                </div>
-                <button onclick="verifyOTP()" class="btn btn-success w-100 fw-bold">Verify & Login</button>
+            <div id="otpGroup" class="d-none">
+                <label class="form-label">Enter OTP</label>
+                <input type="number" id="otpInput" class="form-control mb-3" placeholder="Enter OTP received on SMS">
+                <button onclick="submitOTP()" class="btn btn-success w-100">Verify & Open Account</button>
             </div>
         </div>
 
-        <!-- SECTION 2: RIDER PERSONAL ACCOUNT (LOGIN KE BAAD) -->
-        <div id="accountSection" class="mt-4 d-none">
-            
-            <div class="alert alert-success d-flex justify-content-between align-items-center">
-                <div>
-                    Welcome back, <strong id="accountRiderName">-</strong>! 
-                    (<span id="accountPlatform">Blinkit</span> Delivery Partner)
-                </div>
-                <span class="badge bg-dark" id="accountPhone">-</span>
+        <!-- ACCOUNT DASHBOARD -->
+        <div id="accountDashboard" class="d-none">
+            <div class="alert alert-primary d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Welcome, <span id="rName"></span>!</h5>
+                <span id="rPlatform" class="badge bg-dark"></span>
             </div>
 
-            <div class="row g-4">
-                <!-- Bike & Rent Summary -->
+            <div class="row g-4 mt-1">
                 <div class="col-md-6">
-                    <div class="card dashboard-card p-4 h-100">
-                        <h5 class="text-primary mb-3">🛵 Assigned EV Bike</h5>
-                        <div class="p-3 bg-light rounded mb-3">
-                            <div>Bike ID: <strong id="accBikeId">-</strong></div>
-                            <div>Model: <span id="accBikeModel">-</span></div>
-                            <div>Weekly Rent: <strong>₹<span id="accWeeklyRent">1200</span>/week</strong></div>
-                        </div>
-
-                        <h5 class="text-danger mb-2">💳 Pending Rent Due</h5>
-                        <h2 class="text-danger fw-bold mb-3">₹<span id="accRentDue">0</span></h2>
-                        
-                        <div class="border-top pt-3">
-                            <h6>Pay Weekly Rent (UPI)</h6>
-                            <div class="input-group mb-2">
-                                <input type="number" id="payAmountInput" class="form-control" placeholder="Enter Amount (e.g. 1200)">
-                                <button onclick="payRentFromAccount()" class="btn btn-success fw-bold">Pay Now</button>
-                            </div>
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="text-primary">🛵 Bike Status</h5>
+                        <p class="mb-1">Bike ID: <strong id="bId"></strong></p>
+                        <p class="mb-1">Model: <strong id="bModel"></strong></p>
+                        <hr>
+                        <h5 class="text-danger">Pending Due: ₹<span id="bDue">0</span></h5>
+                        <div class="input-group mt-3">
+                            <input type="number" id="payInput" class="form-control" placeholder="Amount">
+                            <button onclick="makePayment()" class="btn btn-success">Pay Rent</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- KYC & Profile Details -->
                 <div class="col-md-6">
-                    <div class="card dashboard-card p-4 h-100">
-                        <h5 class="text-dark mb-3">📋 KYC & Profile Info</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Driving License:</span>
-                                <strong id="accDL">-</strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Emergency Contact:</span>
-                                <strong id="accEmergency">-</strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Account Status:</span>
-                                <span class="badge bg-success">Active Rider</span>
-                            </li>
-                        </ul>
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="text-secondary">📋 Profile & KYC</h5>
+                        <p class="mb-1">Phone: <strong id="rPhone"></strong></p>
+                        <p class="mb-1">DL Number: <strong id="rDL"></strong></p>
+                        <p class="mb-1">Emergency No: <strong id="rEmergency"></strong></p>
                     </div>
                 </div>
             </div>
-
         </div>
 
     </div>
 
     <script>
-        let currentPhone = '';
+        let phoneNo = '';
 
-        async function sendOTP() {
-            const phone = document.getElementById('userPhone').value;
-            if(!phone || phone.length < 10) return alert('Sahi 10-digit mobile number daalein!');
-
+        async function requestOTP() {
+            phoneNo = document.getElementById('phoneInput').value;
             const res = await fetch('/api/send-otp', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ phone: phoneNo })
             });
             const data = await res.json();
-            
+            alert(data.message);
+
             if(data.success) {
-                currentPhone = phone;
-                document.getElementById('phoneStep').classList.add('d-none');
-                document.getElementById('otpStep').classList.remove('d-none');
-                alert(data.message);
-            } else {
-                alert(data.message);
+                document.getElementById('phoneGroup').classList.add('d-none');
+                document.getElementById('otpGroup').classList.remove('d-none');
             }
         }
 
-        async function verifyOTP() {
-            const otp = document.getElementById('userOTP').value;
+        async function submitOTP() {
+            const otp = document.getElementById('otpInput').value;
             const res = await fetch('/api/verify-otp', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: currentPhone, otp })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ phone: phoneNo, otp })
             });
             const data = await res.json();
 
             if(data.success) {
-                document.getElementById('loginSection').classList.add('d-none');
-                document.getElementById('accountSection').classList.remove('d-none');
+                document.getElementById('loginCard').classList.add('d-none');
+                document.getElementById('accountDashboard').classList.remove('d-none');
                 document.getElementById('logoutBtn').classList.remove('d-none');
-                loadRiderAccountData(data.rider, data.bike);
+
+                document.getElementById('rName').innerText = data.rider.name;
+                document.getElementById('rPhone').innerText = data.rider.phone;
+                document.getElementById('rPlatform').innerText = data.rider.platform;
+                document.getElementById('rDL').innerText = data.rider.dl;
+                document.getElementById('rEmergency').innerText = data.rider.emergency;
+
+                if(data.bike) {
+                    document.getElementById('bId').innerText = data.bike.id;
+                    document.getElementById('bModel').innerText = data.bike.model;
+                    document.getElementById('bDue').innerText = data.bike.weeklyDue;
+                }
             } else {
                 alert(data.message);
             }
         }
 
-        function loadRiderAccountData(rider, bike) {
-            document.getElementById('accountRiderName').innerText = rider.name;
-            document.getElementById('accountPhone').innerText = rider.phone;
-            document.getElementById('accountPlatform').innerText = rider.platform;
-            document.getElementById('accDL').innerText = rider.dl;
-            document.getElementById('accEmergency').innerText = rider.emergency;
+        async function makePayment() {
+            const amount = document.getElementById('payInput').value;
+            const bikeId = document.getElementById('bId').innerText;
 
-            if(bike) {
-                document.getElementById('accBikeId').innerText = bike.id;
-                document.getElementById('accBikeModel').innerText = bike.model;
-                document.getElementById('accWeeklyRent').innerText = bike.weeklyRent;
-                document.getElementById('accRentDue').innerText = bike.weeklyDue;
-            }
-        }
-
-        async function payRentFromAccount() {
-            const amount = document.getElementById('payAmountInput').value;
-            if(!amount) return alert('Amount daalein!');
-
-            const bikeId = document.getElementById('accBikeId').innerText;
             const res = await fetch('/api/pay-weekly-rent', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ bikeId, amount })
             });
-            const result = await res.json();
-            alert(result.message);
-            
-            // Update UI due amount
-            const oldDue = Number(document.getElementById('accRentDue').innerText);
-            document.getElementById('accRentDue').innerText = Math.max(0, oldDue - Number(amount));
-            document.getElementById('payAmountInput').value = '';
-        }
+            const data = await res.json();
+            alert(data.message);
 
-        function logout() {
-            location.reload();
+            if(data.success) {
+                const currentDue = Number(document.getElementById('bDue').innerText);
+                document.getElementById('bDue').innerText = Math.max(0, currentDue - Number(amount));
+                document.getElementById('payInput').value = '';
+            }
         }
     </script>
 </body>
