@@ -3,91 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Yulu Live Rider Dashboard</title>
+    <title>🏪 Dukandar - EV Live Control & GPS Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet OpenStreetMap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .app-card { max-width: 420px; margin: 30px auto; border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background: #fff; }
-        .battery-box { background: #e8f5e9; border-radius: 16px; padding: 20px; text-align: center; }
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .battery-badge { font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; }
+        #map { height: 320px; width: 100%; border-radius: 12px; border: 2px solid #ddd; }
     </style>
 </head>
 <body>
 
-    <div class="app-card p-4">
-        
-        <!-- LOGIN SCREEN -->
-        <div id="loginSection">
-            <h3 class="fw-bold text-center mb-2">🛵 EV Rider App</h3>
-            <p class="text-muted text-center small mb-4">Enter Mobile Number to Check Plan & Live Battery</p>
-            
-            <input type="tel" id="mobileInput" class="form-control form-control-lg mb-3" placeholder="Enter Mobile No. (e.g. 7991352092)">
-            <button onclick="loginRider()" class="btn btn-dark btn-lg w-100 fw-bold">View My Live Status</button>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand fw-bold"><i class="fa-solid fa-store me-2"></i>Dukandar Live EV Tracker</span>
+            <button class="btn btn-outline-light btn-sm" onclick="fetchFleet()"><i class="fa-solid fa-rotate-right me-1"></i> Refresh</button>
         </div>
+    </nav>
 
-        <!-- RIDER LIVE DASHBOARD -->
-        <div id="dashboardSection" class="d-none">
+    <div class="container-fluid my-4">
+        <div class="row g-4">
             
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <h5 class="fw-bold mb-0" id="riderName">-</h5>
-                    <small class="text-muted" id="riderPlatform">- Partner</small>
+            <!-- LEFT: ISSUE NEW BIKE FORM -->
+            <div class="col-md-4">
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-plus text-primary me-2"></i>Assign Bike & KYC</h5>
+                    
+                    <div class="mb-2"><label class="form-label small fw-bold">Rider Name</label><input type="text" id="rName" class="form-control" placeholder="Sachin Kumar"></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">Phone Number</label><input type="tel" id="rPhone" class="form-control" placeholder="10 Digit Mobile"></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">Aadhaar Number</label><input type="text" id="rAadhaar" class="form-control" placeholder="Aadhaar No."></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">PAN Card</label><input type="text" id="rPan" class="form-control" placeholder="PAN No."></div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Platform</label>
+                            <select id="rPlatform" class="form-select">
+                                <option>Blinkit</option>
+                                <option>Zepto</option>
+                                <option>Zomato</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Bike ID</label>
+                            <input type="text" id="rBikeId" class="form-control" placeholder="EV-101">
+                        </div>
+                    </div>
+
+                    <button onclick="assignBike()" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-key me-2"></i>Issue Bike Live</button>
                 </div>
-                <button onclick="location.reload()" class="btn btn-light btn-sm"><i class="fa-solid fa-power-off"></i></button>
             </div>
 
-            <!-- LIVE BATTERY CARD -->
-            <div class="battery-box mb-3">
-                <i class="fa-solid fa-battery-bolt fa-3x text-success mb-2"></i>
-                <h1 class="fw-bold mb-0"><span id="bikeBattery">0</span>%</h1>
-                <small class="text-muted">Live Battery Charge</small>
+            <!-- RIGHT: LIVE MAP & FLEET TABLE -->
+            <div class="col-md-8">
+                <!-- LIVE GPS MAP -->
+                <div class="card card-custom p-3 mb-4">
+                    <h6 class="fw-bold mb-2"><i class="fa-solid fa-map-location-dot text-danger me-2"></i>Live GPS Fleet Map</h6>
+                    <div id="map"></div>
+                </div>
+
+                <!-- TABLE -->
+                <div class="card card-custom p-4">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-bolt text-warning me-2"></i>Live Fleet Status</h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Bike ID</th>
+                                    <th>Battery %</th>
+                                    <th>Status</th>
+                                    <th>Active Rider & KYC</th>
+                                    <th>Days Left</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fleetTable"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <!-- BIKE & PLAN SUMMARY -->
-            <div class="p-3 bg-light rounded-3 mb-3">
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Assigned Bike:</span>
-                    <strong id="bikeModelId">-</strong>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Active Plan:</span>
-                    <strong id="planName">-</strong>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span class="text-muted">Plan Validity:</span>
-                    <span class="badge bg-danger" id="daysLeftBadge">0 Days Left</span>
-                </div>
-            </div>
-
-            <button class="btn btn-success w-100 fw-bold py-2"><i class="fa-solid fa-bolt me-2"></i>Swap Battery / Renew Plan</button>
         </div>
-
     </div>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        async function loginRider() {
-            const phone = document.getElementById('mobileInput').value;
-            const res = await fetch('/api/rider/dashboard', {
+        let map, markers = {};
+
+        function initMap() {
+            map = L.map('map').setView([19.0760, 72.8777], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+        }
+
+        async function fetchFleet() {
+            const res = await fetch('/api/admin/fleet');
+            const data = await res.json();
+            
+            const tbody = document.getElementById('fleetTable');
+            tbody.innerHTML = '';
+
+            data.fleet.forEach(item => {
+                const battClass = item.battery > 50 ? 'bg-success text-white' : (item.battery > 20 ? 'bg-warning text-dark' : 'bg-danger text-white');
+                
+                let riderInfo = '<span class="text-muted">Unassigned</span>';
+                let daysLeftBadge = '<span class="badge bg-secondary">N/A</span>';
+
+                if(item.rider) {
+                    riderInfo = `
+                        <div><strong>${item.rider.name}</strong> (${item.rider.platform})</div>
+                        <div class="small text-muted">📱 ${item.rider.phone}</div>
+                        <div class="small text-secondary">Aadhaar: ${item.rider.aadhaar} | PAN: ${item.rider.pan}</div>
+                    `;
+                    const badgeColor = item.rider.daysLeft <= 2 ? 'bg-danger' : 'bg-primary';
+                    daysLeftBadge = `<span class="badge ${badgeColor}">${item.rider.daysLeft} Days</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.bikeId}</strong><br><small class="text-muted">${item.model}</small></td>
+                        <td><span class="battery-badge ${battClass}"><i class="fa-solid fa-battery-three-quarters me-1"></i>${item.battery}%</span></td>
+                        <td><span class="badge ${item.status === 'Rented' ? 'bg-info text-dark' : 'bg-success'}">${item.status}</span></td>
+                        <td>${riderInfo}</td>
+                        <td>${daysLeftBadge}</td>
+                    </tr>
+                `;
+
+                // Update Map Markers
+                if (markers[item.bikeId]) {
+                    markers[item.bikeId].setLatLng([item.lat, item.lng]);
+                } else {
+                    markers[item.bikeId] = L.marker([item.lat, item.lng]).addTo(map)
+                        .bindPopup(`<b>${item.bikeId}</b><br>Battery: ${item.battery}%<br>Rider: ${item.rider ? item.rider.name : 'None'}`);
+                }
+            });
+        }
+
+        async function assignBike() {
+            const payload = {
+                name: document.getElementById('rName').value,
+                phone: document.getElementById('rPhone').value,
+                aadhaar: document.getElementById('rAadhaar').value,
+                pan: document.getElementById('rPan').value,
+                platform: document.getElementById('rPlatform').value,
+                bikeId: document.getElementById('rBikeId').value,
+                planDays: 7
+            };
+
+            const res = await fetch('/api/admin/assign-bike', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ phone })
+                body: JSON.stringify(payload)
             });
-            const data = await res.json();
-
-            if(data.success) {
-                document.getElementById('loginSection').classList.add('d-none');
-                document.getElementById('dashboardSection').classList.remove('d-none');
-
-                document.getElementById('riderName').innerText = data.rider.name;
-                document.getElementById('riderPlatform').innerText = data.rider.platform;
-                document.getElementById('bikeBattery').innerText = data.bike.battery;
-                document.getElementById('bikeModelId').innerText = `${data.bike.id} (${data.bike.model})`;
-                document.getElementById('planName').innerText = data.rider.planName;
-                document.getElementById('daysLeftBadge').innerText = `${data.rider.daysLeft} Days Left`;
-            } else {
-                alert(data.message);
-            }
+            const result = await res.json();
+            alert(result.message);
+            if(result.success) fetchFleet();
         }
+
+        initMap();
+        fetchFleet();
+        setInterval(fetchFleet, 5000); // Auto refresh every 5s
     </script>
 </body>
 </html>
