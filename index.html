@@ -3,263 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Yulu-Style EV Rental Portal</title>
+    <title>⚡ EV Rental - Rider Account Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f1f5f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: #0284c7; }
-        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-        .badge-available { background-color: #10b981; }
-        .badge-rented { background-color: #f59e0b; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .auth-card { max-width: 400px; margin: 80px auto; border-radius: 12px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .dashboard-card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-dark mb-4">
+    <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">⚡ EV Rental Hub (Weekly Rent)</span>
-            <span class="text-light fs-6">Delivery Partner System</span>
+            <span class="navbar-brand mb-0 h1">⚡ EV Fleet Portal</span>
+            <button id="logoutBtn" onclick="logout()" class="btn btn-outline-light btn-sm d-none">Logout</button>
         </div>
     </nav>
 
-    <div class="container pb-5">
+    <div class="container">
         
-        <!-- Top Stats -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-3">
-                <div class="card card-custom p-3 bg-primary text-white">
-                    <h6>Total Fleet</h6>
-                    <h3 id="stat-total">0</h3>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-custom p-3 bg-warning text-dark">
-                    <h6>Active Rentals</h6>
-                    <h3 id="stat-rented">0</h3>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-custom p-3 bg-success text-white">
-                    <h6>Available Bikes</h6>
-                    <h3 id="stat-available">0</h3>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-custom p-3 bg-dark text-white">
-                    <h6>Total Onboarded Riders</h6>
-                    <h3 id="stat-riders">0</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4">
+        <!-- SECTION 1: MOBILE NUMBER + OTP LOGIN -->
+        <div id="loginSection" class="card auth-card p-4">
+            <h4 class="text-center mb-3">📱 Rider Login</h4>
+            <p class="text-muted text-center small">Apna registered mobile number daal kar login karein</p>
             
-            <!-- Left Side: Forms -->
-            <div class="col-lg-5">
-                
-                <!-- Rider Full KYC Registration Form -->
-                <div class="card card-custom p-4 mb-4">
-                    <h4 class="mb-3 text-primary">📝 Rider Onboarding / KYC</h4>
-                    <form id="onboardForm">
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold">Full Name</label>
-                            <input type="text" id="regName" class="form-control form-control-sm" placeholder="Rider Name" required>
-                        </div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Mobile No.</label>
-                                <input type="tel" id="regPhone" class="form-control form-control-sm" placeholder="10-digit" required>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Emergency Contact</label>
-                                <input type="tel" id="regEmergency" class="form-control form-control-sm" placeholder="Family/Friend" required>
-                            </div>
-                        </div>
-                        <div class="row g-2 mb-2">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Aadhaar Number</label>
-                                <input type="text" id="regAadhaar" class="form-control form-control-sm" placeholder="12-digit" required>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">DL Number</label>
-                                <input type="text" id="regDL" class="form-control form-control-sm" placeholder="DL Number" required>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small fw-bold">Delivery Platform</label>
-                            <select id="regPlatform" class="form-select form-select-sm" required>
-                                <option value="Blinkit">Blinkit</option>
-                                <option value="Zomato">Zomato</option>
-                                <option value="Swiggy">Swiggy</option>
-                                <option value="Zepto">Zepto</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Assign EV Bike</label>
-                            <select id="bikeSelect" class="form-select form-select-sm" required></select>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 fw-bold">Register & Issue Bike</button>
-                    </form>
+            <!-- Step A: Enter Mobile Number -->
+            <div id="phoneStep">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mobile Number</label>
+                    <input type="tel" id="userPhone" class="form-control" placeholder="10 Digit Mobile No." required>
                 </div>
-
-                <!-- Weekly Rent Pay -->
-                <div class="card card-custom p-4">
-                    <h4 class="mb-3 text-success">💳 Weekly Rent Pay (UPI)</h4>
-                    <form id="payForm">
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Select Active Rider / Bike</label>
-                            <select id="rentedBikeSelect" class="form-select" required></select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Weekly Amount (₹)</label>
-                            <input type="number" id="payAmount" class="form-control" placeholder="₹1200" required>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100 fw-bold">Collect Weekly Rent</button>
-                    </form>
-                </div>
-
+                <button onclick="sendOTP()" class="btn btn-primary w-100 fw-bold">Send OTP</button>
             </div>
 
-            <!-- Right Side: Dashboard Tables -->
-            <div class="col-lg-7">
-                
-                <!-- Live Bike Fleet Table -->
-                <div class="card card-custom p-4 mb-4">
-                    <h4 class="mb-3">🛵 Live Bike Status</h4>
-                    <div class="table-responsive">
-                        <table class="table table-sm table-hover align-middle">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Bike ID</th>
-                                    <th>Model</th>
-                                    <th>Weekly Rent</th>
-                                    <th>Status</th>
-                                    <th>Assigned To</th>
-                                    <th>Weekly Due</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fleetTable"></tbody>
-                        </table>
+            <!-- Step B: Enter OTP -->
+            <div id="otpStep" class="d-none">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Enter OTP</label>
+                    <input type="number" id="userOTP" class="form-control" placeholder="4-Digit OTP (Test: 1234)" required>
+                </div>
+                <button onclick="verifyOTP()" class="btn btn-success w-100 fw-bold">Verify & Login</button>
+            </div>
+        </div>
+
+        <!-- SECTION 2: RIDER PERSONAL ACCOUNT (LOGIN KE BAAD) -->
+        <div id="accountSection" class="mt-4 d-none">
+            
+            <div class="alert alert-success d-flex justify-content-between align-items-center">
+                <div>
+                    Welcome back, <strong id="accountRiderName">-</strong>! 
+                    (<span id="accountPlatform">Blinkit</span> Delivery Partner)
+                </div>
+                <span class="badge bg-dark" id="accountPhone">-</span>
+            </div>
+
+            <div class="row g-4">
+                <!-- Bike & Rent Summary -->
+                <div class="col-md-6">
+                    <div class="card dashboard-card p-4 h-100">
+                        <h5 class="text-primary mb-3">🛵 Assigned EV Bike</h5>
+                        <div class="p-3 bg-light rounded mb-3">
+                            <div>Bike ID: <strong id="accBikeId">-</strong></div>
+                            <div>Model: <span id="accBikeModel">-</span></div>
+                            <div>Weekly Rent: <strong>₹<span id="accWeeklyRent">1200</span>/week</strong></div>
+                        </div>
+
+                        <h5 class="text-danger mb-2">💳 Pending Rent Due</h5>
+                        <h2 class="text-danger fw-bold mb-3">₹<span id="accRentDue">0</span></h2>
+                        
+                        <div class="border-top pt-3">
+                            <h6>Pay Weekly Rent (UPI)</h6>
+                            <div class="input-group mb-2">
+                                <input type="number" id="payAmountInput" class="form-control" placeholder="Enter Amount (e.g. 1200)">
+                                <button onclick="payRentFromAccount()" class="btn btn-success fw-bold">Pay Now</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Complete Onboarded Riders Database -->
-                <div class="card card-custom p-4">
-                    <h4 class="mb-3">👥 Rider Master Data (KYC Records)</h4>
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered align-middle" style="font-size: 13px;">
-                            <thead class="table-secondary">
-                                <tr>
-                                    <th>Name & Phone</th>
-                                    <th>Aadhaar / DL</th>
-                                    <th>Work Platform</th>
-                                    <th>Emergency</th>
-                                    <th>Assigned EV</th>
-                                </tr>
-                            </thead>
-                            <tbody id="riderTable"></tbody>
-                        </table>
+                <!-- KYC & Profile Details -->
+                <div class="col-md-6">
+                    <div class="card dashboard-card p-4 h-100">
+                        <h5 class="text-dark mb-3">📋 KYC & Profile Info</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Driving License:</span>
+                                <strong id="accDL">-</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Emergency Contact:</span>
+                                <strong id="accEmergency">-</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Account Status:</span>
+                                <span class="badge bg-success">Active Rider</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
             </div>
 
         </div>
+
     </div>
 
     <script>
-        async function loadData() {
-            try {
-                const res = await fetch('/api/bikes');
-                const data = await res.json();
-                
-                const bikes = data.bikes;
-                const riders = data.riders;
+        let currentPhone = '';
 
-                // Stats
-                document.getElementById('stat-total').innerText = bikes.length;
-                document.getElementById('stat-rented').innerText = bikes.filter(b => b.status === 'Rented').length;
-                document.getElementById('stat-available').innerText = bikes.filter(b => b.status === 'Available').length;
-                document.getElementById('stat-riders').innerText = riders.length;
+        async function sendOTP() {
+            const phone = document.getElementById('userPhone').value;
+            if(!phone || phone.length < 10) return alert('Sahi 10-digit mobile number daalein!');
 
-                // Dropdowns
-                const bikeSelect = document.getElementById('bikeSelect');
-                const availBikes = bikes.filter(b => b.status === 'Available');
-                bikeSelect.innerHTML = availBikes.length > 0 
-                    ? availBikes.map(b => `<option value="${b.id}">${b.id} - ${b.model} (₹${b.weeklyRent}/week)</option>`).join('')
-                    : `<option value="">No bikes available</option>`;
-
-                const rentedBikeSelect = document.getElementById('rentedBikeSelect');
-                const rentedBikes = bikes.filter(b => b.status === 'Rented');
-                rentedBikeSelect.innerHTML = rentedBikes.length > 0
-                    ? rentedBikes.map(b => `<option value="${b.id}">${b.id} - ${b.rider} (Due: ₹${b.weeklyDue})</option>`).join('')
-                    : `<option value="">No active rentals</option>`;
-
-                // Fleet Table
-                document.getElementById('fleetTable').innerHTML = bikes.map(b => `
-                    <tr>
-                        <td><strong>${b.id}</strong></td>
-                        <td>${b.model}</td>
-                        <td>₹${b.weeklyRent}</td>
-                        <td><span class="badge ${b.status === 'Available' ? 'badge-available' : 'badge-rented'}">${b.status}</span></td>
-                        <td>${b.rider || '-'}</td>
-                        <td class="text-danger fw-bold">₹${b.weeklyDue}</td>
-                        <td>
-                            ${b.status === 'Rented' ? `<button onclick="returnBike('${b.id}')" class="btn btn-sm btn-outline-danger py-0">Return</button>` : '-'}
-                        </td>
-                    </tr>
-                `).join('');
-
-                // Rider KYC Master Table
-                document.getElementById('riderTable').innerHTML = riders.map(r => `
-                    <tr>
-                        <td><strong>${r.name}</strong><br><small>${r.phone}</small></td>
-                        <td>${r.aadhaar}<br><small class="text-muted">DL: ${r.dl}</small></td>
-                        <td><span class="badge bg-info text-dark">${r.platform}</span></td>
-                        <td>${r.emergency}</td>
-                        <td><strong>${r.bikeId || 'None'}</strong></td>
-                    </tr>
-                `).join('');
-
-            } catch (err) {
-                console.error("Error loading data:", err);
+            const res = await fetch('/api/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            });
+            const data = await res.json();
+            
+            if(data.success) {
+                currentPhone = phone;
+                document.getElementById('phoneStep').classList.add('d-none');
+                document.getElementById('otpStep').classList.remove('d-none');
+                alert(data.message);
+            } else {
+                alert(data.message);
             }
         }
 
-        // Register Rider Form Submit
-        document.getElementById('onboardForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                name: document.getElementById('regName').value,
-                phone: document.getElementById('regPhone').value,
-                emergency: document.getElementById('regEmergency').value,
-                aadhaar: document.getElementById('regAadhaar').value,
-                dl: document.getElementById('regDL').value,
-                platform: document.getElementById('regPlatform').value,
-                bikeId: document.getElementById('bikeSelect').value
-            };
-
-            if(!payload.bikeId) return alert('Kripya EV Bike Select karein!');
-
-            const res = await fetch('/api/register-rider', {
+        async function verifyOTP() {
+            const otp = document.getElementById('userOTP').value;
+            const res = await fetch('/api/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ phone: currentPhone, otp })
             });
-            const result = await res.json();
-            alert(result.message);
-            document.getElementById('onboardForm').reset();
-            loadData();
-        });
+            const data = await res.json();
 
-        // Pay Weekly Rent
-        document.getElementById('payForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const bikeId = document.getElementById('rentedBikeSelect').value;
-            const amount = document.getElementById('payAmount').value;
+            if(data.success) {
+                document.getElementById('loginSection').classList.add('d-none');
+                document.getElementById('accountSection').classList.remove('d-none');
+                document.getElementById('logoutBtn').classList.remove('d-none');
+                loadRiderAccountData(data.rider, data.bike);
+            } else {
+                alert(data.message);
+            }
+        }
 
+        function loadRiderAccountData(rider, bike) {
+            document.getElementById('accountRiderName').innerText = rider.name;
+            document.getElementById('accountPhone').innerText = rider.phone;
+            document.getElementById('accountPlatform').innerText = rider.platform;
+            document.getElementById('accDL').innerText = rider.dl;
+            document.getElementById('accEmergency').innerText = rider.emergency;
+
+            if(bike) {
+                document.getElementById('accBikeId').innerText = bike.id;
+                document.getElementById('accBikeModel').innerText = bike.model;
+                document.getElementById('accWeeklyRent').innerText = bike.weeklyRent;
+                document.getElementById('accRentDue').innerText = bike.weeklyDue;
+            }
+        }
+
+        async function payRentFromAccount() {
+            const amount = document.getElementById('payAmountInput').value;
+            if(!amount) return alert('Amount daalein!');
+
+            const bikeId = document.getElementById('accBikeId').innerText;
             const res = await fetch('/api/pay-weekly-rent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -267,25 +177,16 @@
             });
             const result = await res.json();
             alert(result.message);
-            document.getElementById('payForm').reset();
-            loadData();
-        });
-
-        // Return Bike
-        async function returnBike(bikeId) {
-            if (confirm('Kya aap is bike ko return mark karke status free karna chahte hain?')) {
-                const res = await fetch('/api/return-bike', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ bikeId })
-                });
-                const result = await res.json();
-                alert(result.message);
-                loadData();
-            }
+            
+            // Update UI due amount
+            const oldDue = Number(document.getElementById('accRentDue').innerText);
+            document.getElementById('accRentDue').innerText = Math.max(0, oldDue - Number(amount));
+            document.getElementById('payAmountInput').value = '';
         }
 
-        loadData();
+        function logout() {
+            location.reload();
+        }
     </script>
 </body>
 </html>
