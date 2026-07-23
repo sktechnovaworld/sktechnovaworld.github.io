@@ -3,484 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yulu Clone App</title>
-    <!-- Font Awesome Icons -->
+    <title>🏪 Dukandar - EV Live Control Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: #f4f5f7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Mobile Container Frame */
-        .app-container {
-            width: 100%;
-            max-width: 412px;
-            height: 100vh;
-            max-height: 890px;
-            background: #ffffff;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        @media (min-width: 450px) {
-            .app-container {
-                border-radius: 30px;
-                height: 92vh;
-            }
-        }
-
-        .screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            padding: 24px 20px;
-            overflow-y: auto;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        /* Common Button */
-        .btn-black {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            border: none;
-            border-radius: 30px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            margin-top: auto;
-            text-align: center;
-        }
-
-        .btn-black:active {
-            opacity: 0.9;
-        }
-
-        /* SCREEN 1: PHONE LOGIN */
-        .back-icon {
-            font-size: 20px;
-            margin-bottom: 24px;
-            cursor: pointer;
-        }
-
-        .title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            color: #707070;
-            font-size: 15px;
-            margin-bottom: 32px;
-        }
-
-        .phone-input-container {
-            display: flex;
-            gap: 12px;
-        }
-
-        .country-code {
-            background: #f7f7f8;
-            border: 1px solid #e2e2e2;
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-
-        .phone-input-box {
-            flex: 1;
-            border: 1.5px solid #1a1a1a;
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .phone-input-box input {
-            border: none;
-            outline: none;
-            font-size: 16px;
-            width: 100%;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .tnc-text {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            margin-top: 12px;
-        }
-
-        /* SCREEN 2: LOCATION PERMISSION */
-        .location-graphic {
-            width: 200px;
-            height: 200px;
-            margin: 60px auto 40px auto;
-            background: #f8f9fa;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .location-graphic i {
-            font-size: 48px;
-            color: #1a1a1a;
-        }
-
-        /* SCREEN 3: HOME SERVICE SCREEN */
-        .bg-lightning {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 100%;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-
-        .rental-card {
-            background: #f8f9fa;
-            border-radius: 20px;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            cursor: pointer;
-        }
-
-        .scooter-img {
-            width: 90px;
-            height: auto;
-        }
-
-        .rental-info h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .rental-info p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* SCREEN 4: PROFILE SCREEN */
-        .profile-card {
-            background: linear-gradient(135deg, #eaf3ff 0%, #f0f7ff 100%);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .avatar-box {
-            width: 60px;
-            height: 60px;
-            background: #2d3748;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-        }
-
-        .profile-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .edit-icon {
-            position: absolute;
-            right: 16px;
-            top: 16px;
-            background: #ffffff;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #555;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .menu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            padding-bottom: 80px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #222;
-            cursor: pointer;
-        }
-
-        .menu-icon-box {
-            width: 40px;
-            height: 40px;
-            background: #f5f6f8;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .badge-new {
-            background: #e53e3e;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 8px;
-        }
-
-        /* BOTTOM NAVBAR */
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 68px;
-            background: #ffffff;
-            border-top: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 10px;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: #888;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            width: 25%;
-        }
-
-        .nav-item i {
-            font-size: 18px;
-        }
-
-        .nav-item.active {
-            color: #1a1a1a;
-        }
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .battery-badge { font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-
-        <!-- SCREEN 1: ENTER NUMBER -->
-        <div id="screen1" class="screen active">
-            <div class="back-icon"><i class="fa-solid fa-arrow-left"></i></div>
-            <h1 class="title">Enter your number</h1>
-            <p class="subtitle">We'll send an OTP for verification</p>
-
-            <div class="phone-input-container">
-                <div class="country-code">
-                    +91 <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: #666;"></i>
-                </div>
-                <div class="phone-input-box">
-                    <input type="tel" id="mobileNumber" placeholder="Mobile Number" value="7991352092">
-                    <i class="fa-solid fa-xmark" style="color: #999; cursor: pointer;"></i>
-                </div>
-            </div>
-
-            <button class="btn-black" onclick="goToScreen('screen2')">Continue</button>
-            <p class="tnc-text">By continuing, you agree to <span style="text-decoration: underline;">TnCs</span></p>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand fw-bold"><i class="fa-solid fa-store me-2"></i>Dukandar EV Live Tracker Portal</span>
+            <button class="btn btn-outline-light btn-sm" onclick="fetchFleet()"><i class="fa-solid fa-rotate-right me-1"></i> Refresh Data</button>
         </div>
+    </nav>
 
-        <!-- SCREEN 2: LOCATION PERMISSION -->
-        <div id="screen2" class="screen">
-            <h1 class="title" style="margin-top: 20px;">Location permission</h1>
-            <p class="subtitle">To find nearby vehicles and show routes. Background location access is used only for Earn with Yulu feature to assign orders and improve delivery experience.</p>
-
-            <div class="location-graphic">
-                <i class="fa-solid fa-location-dot"></i>
-            </div>
-
-            <button class="btn-black" onclick="goToScreen('screen3')">Continue</button>
-        </div>
-
-        <!-- SCREEN 3: HOME SERVICE -->
-        <div id="screen3" class="screen">
-            <svg class="bg-lightning" viewBox="0 0 100 100">
-                <path d="M50,5 L20,55 L45,55 L35,95 L80,45 L55,45 Z" fill="none" stroke="#d4af37" stroke-width="1.5"/>
-            </svg>
-
-            <h2 class="section-title">Our service</h2>
-
-            <div class="rental-card" onclick="goToScreen('screen4')">
-                <div style="font-size: 40px; color: #444;">🛵</div>
-                <div class="rental-info">
-                    <h3>Rentals</h3>
-                    <p>For delivery</p>
-                </div>
-            </div>
-
-            <!-- Bottom Navigation Bar -->
-            <div class="bottom-nav">
-                <div class="nav-item active" onclick="goToScreen('screen3')">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Money</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </div>
-                <div class="nav-item" onclick="goToScreen('screen4')">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Profile</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCREEN 4: PROFILE SCREEN -->
-        <div id="screen4" class="screen">
+    <div class="container-fluid my-4">
+        <div class="row g-4">
             
-            <div class="profile-card">
-                <div class="avatar-box">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="profile-name">Sachin Kumar</div>
-                <div class="edit-icon"><i class="fa-solid fa-pen"></i></div>
-            </div>
+            <!-- LEFT: ISSUE NEW BIKE FORM -->
+            <div class="col-md-4">
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-plus text-primary me-2"></i>Assign Bike & KYC</h5>
+                    
+                    <div class="mb-2"><label class="form-label small fw-bold">Rider Name</label><input type="text" id="rName" class="form-control" placeholder="Rider Name"></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">Phone Number</label><input type="tel" id="rPhone" class="form-control" placeholder="10 Digit Phone"></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">Aadhaar Number</label><input type="text" id="rAadhaar" class="form-control" placeholder="XXXX-XXXX-XXXX"></div>
+                    <div class="mb-2"><label class="form-label small fw-bold">PAN Card</label><input type="text" id="rPan" class="form-control" placeholder="PAN Number"></div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Platform</label>
+                            <select id="rPlatform" class="form-select">
+                                <option>Blinkit</option>
+                                <option>Zepto</option>
+                                <option>Zomato</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Bike ID</label>
+                            <input type="text" id="rBikeId" class="form-control" placeholder="EV-102">
+                        </div>
+                    </div>
 
-            <div class="menu-list">
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-bicycle"></i></div>
-                    <span>Rental Plan History</span>
-                    <span class="badge-new">NEW</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                    <span>Saver Packs</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-regular fa-file-lines"></i></div>
-                    <span>Ride History</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-tag"></i></div>
-                    <span>Offers</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-gift"></i></div>
-                    <span>Refer & Earn ₹200</span>
-                    <span class="badge-new">NEW</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-wallet"></i></div>
-                    <span>Ride Charges</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-gear"></i></div>
-                    <span>Settings</span>
-                </div>
-
-                <div class="menu-item">
-                    <div class="menu-icon-box"><i class="fa-solid fa-map-location-dot"></i></div>
-                    <span>Request a Yulu Centre</span>
+                    <button onclick="assignBike()" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-key me-2"></i>Issue Bike Live</button>
                 </div>
             </div>
 
-            <!-- Bottom Navigation Bar -->
-            <div class="bottom-nav">
-                <div class="nav-item" onclick="goToScreen('screen3')">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Money</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </div>
-                <div class="nav-item active" onclick="goToScreen('screen4')">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profile</span>
+            <!-- RIGHT: LIVE FLEET & BATTERY TRACKER -->
+            <div class="col-md-8">
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-bolt text-warning me-2"></i>Live Fleet & Battery Status</h5>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Bike ID</th>
+                                    <th>Battery %</th>
+                                    <th>Status</th>
+                                    <th>Active Rider & KYC</th>
+                                    <th>Plan Days Left</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fleetTable">
+                                <!-- Data injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
 
         </div>
-
     </div>
 
     <script>
-        function goToScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        async function fetchFleet() {
+            const res = await fetch('/api/admin/fleet');
+            const data = await res.json();
+            
+            const tbody = document.getElementById('fleetTable');
+            tbody.innerHTML = '';
+
+            data.fleet.forEach(item => {
+                const battClass = item.battery > 50 ? 'bg-success text-white' : (item.battery > 20 ? 'bg-warning text-dark' : 'bg-danger text-white');
+                
+                let riderInfo = '<span class="text-muted">Unassigned</span>';
+                let daysLeftBadge = '<span class="badge bg-secondary">N/A</span>';
+
+                if(item.rider) {
+                    riderInfo = `
+                        <div><strong>${item.rider.name}</strong> (${item.rider.platform})</div>
+                        <div class="small text-muted">📱 ${item.rider.phone}</div>
+                        <div class="small text-secondary">Aadhaar: ${item.rider.aadhaar} | PAN: ${item.rider.pan}</div>
+                    `;
+                    
+                    const badgeColor = item.rider.daysLeft <= 2 ? 'bg-danger' : 'bg-primary';
+                    daysLeftBadge = `<span class="badge ${badgeColor}">${item.rider.daysLeft} Days Left</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.bikeId}</strong><br><small class="text-muted">${item.model}</small></td>
+                        <td><span class="battery-badge ${battClass}"><i class="fa-solid fa-battery-three-quarters me-1"></i>${item.battery}%</span></td>
+                        <td><span class="badge ${item.status === 'Rented' ? 'bg-info text-dark' : 'bg-success'}">${item.status}</span></td>
+                        <td>${riderInfo}</td>
+                        <td>${daysLeftBadge}</td>
+                    </tr>
+                `;
+            });
         }
+
+        async function assignBike() {
+            const payload = {
+                name: document.getElementById('rName').value,
+                phone: document.getElementById('rPhone').value,
+                aadhaar: document.getElementById('rAadhaar').value,
+                pan: document.getElementById('rPan').value,
+                platform: document.getElementById('rPlatform').value,
+                bikeId: document.getElementById('rBikeId').value,
+                planDays: 7
+            };
+
+            const res = await fetch('/api/admin/assign-bike', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            alert(result.message);
+            if(result.success) fetchFleet();
+        }
+
+        // Initial Load
+        fetchFleet();
     </script>
 </body>
 </html>
