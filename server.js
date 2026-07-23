@@ -8,90 +8,71 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Database Structures
+// Database (Bikes & Registered Riders)
 let bikes = [
-    { id: 'EV-101', model: 'Speed-X Teal', status: 'Available', rider: null, weeklyRent: 1200, weeklyDue: 0 },
-    { id: 'EV-102', model: 'Urban Red', status: 'Available', rider: null, weeklyRent: 1200, weeklyDue: 0 },
-    { id: 'EV-103', model: 'Speed-X Teal', status: 'Rented', rider: 'Suresh Kumar', weeklyRent: 1200, weeklyDue: 1200 }
+    { id: 'EV-101', model: 'Speed-X Teal', status: 'Rented', rider: 'Sachin', weeklyRent: 1200, weeklyDue: 1200 },
+    { id: 'EV-102', model: 'Urban Red', status: 'Available', rider: null, weeklyRent: 1200, weeklyDue: 0 }
 ];
 
 let riders = [
     { 
         id: 1, 
-        name: 'Suresh Kumar', 
+        name: 'Sachin', 
         phone: '9876543210', 
         emergency: '9123456789', 
         aadhaar: '[Aadhaar Redacted]', 
         dl: 'MH-03-2022-009', 
         platform: 'Blinkit', 
-        bikeId: 'EV-103' 
+        bikeId: 'EV-101' 
     }
 ];
 
-// --- APIs ---
+// OTP Store (Testing Purpose)
+let generatedOTPs = {};
 
-// 1. Get All Bikes and Onboarded Riders Data
-app.get('/api/bikes', (req, res) => {
-    res.json({ success: true, bikes, riders });
+// --- OTP & LOGIN APIS ---
+
+// 1. Send OTP
+app.post('/api/send-otp', (req, res) => {
+    const { phone } = req.body;
+    
+    // Check if number exists in Database
+    const rider = riders.find(r => r.phone === phone);
+    if (!rider) {
+        return res.status(400).json({ success: false, message: 'Yeh mobile number registered nahi hai! Admin se contact karein.' });
+    }
+
+    // Fixed Test OTP: 1234 (Production me MSG91 / Fast2SMS API se Real SMS bhej sakte ho)
+    generatedOTPs[phone] = '1234';
+    res.json({ success: true, message: 'OTP bhej diya gaya hai! (Test OTP: 1234)' });
 });
 
-// 2. Rider Onboarding & Bike Allocation (KYC + Issue)
-app.post('/api/register-rider', (req, res) => {
-    const { name, phone, emergency, aadhaar, dl, platform, bikeId } = req.body;
+// 2. Verify OTP & Open Account
+app.post('/api/verify-otp', (req, res) => {
+    const { phone, otp } = req.body;
 
-    const bike = bikes.find(b => b.id === bikeId && b.status === 'Available');
-    if (!bike) return res.status(400).json({ success: false, message: 'Yeh bike abhi available nahi hai!' });
+    if (generatedOTPs[phone] && generatedOTPs[phone] === otp) {
+        const rider = riders.find(r => r.phone === phone);
+        const bike = bikes.find(b => b.id === rider.bikeId);
+        
+        delete generatedOTPs[phone]; // Clear OTP after success
+        return res.json({ success: true, rider, bike, message: 'Login Successful!' });
+    }
 
-    // Update Bike Status
-    bike.status = 'Rented';
-    bike.rider = name;
-    bike.weeklyDue = bike.weeklyRent; // 1 Week advance rent due
-
-    // Save Rider KYC Data
-    riders.push({
-        id: riders.length + 1,
-        name,
-        phone,
-        emergency,
-        aadhaar,
-        dl,
-        platform,
-        bikeId
-    });
-
-    res.json({ success: true, message: `Rider ${name} onboarded! Bike ${bikeId} successfully issue ho gayi.` });
+    res.status(400).json({ success: false, message: 'Galat OTP! Kripya 1234 daalein.' });
 });
 
 // 3. Weekly Rent Collection
 app.post('/api/pay-weekly-rent', (req, res) => {
     const { bikeId, amount } = req.body;
-    const bike = bikes.find(b => b.id === bikeId && b.status === 'Rented');
+    const bike = bikes.find(b => b.id === bikeId);
 
-    if (!bike) return res.status(400).json({ success: false, message: 'Rented bike select karein!' });
+    if (!bike) return res.status(400).json({ success: false, message: 'Bike error' });
 
     const numAmount = Number(amount);
     bike.weeklyDue = Math.max(0, bike.weeklyDue - numAmount);
 
-    res.json({ success: true, message: `₹${numAmount} Rent receive ho gaya! Remaining Due: ₹${bike.weeklyDue}` });
-});
-
-// 4. Return Bike
-app.post('/api/return-bike', (req, res) => {
-    const { bikeId } = req.body;
-    const bike = bikes.find(b => b.id === bikeId);
-
-    if (bike) {
-        bike.status = 'Available';
-        bike.rider = null;
-        bike.weeklyDue = 0;
-
-        // Rider Record me bike clear karna
-        const rider = riders.find(r => r.bikeId === bikeId);
-        if (rider) rider.bikeId = 'Returned';
-
-        return res.json({ success: true, message: `Bike ${bikeId} successfully return kar li gayi hai.` });
-    }
-    res.status(400).json({ success: false, message: 'Bike error' });
+    res.json({ success: true, message: `₹${numAmount} Rent Payment Successful!` });
 });
 
 app.get('*', (req, res) => {
@@ -99,4 +80,4 @@ app.get('*', (req, res) => {
 });
 
 const PORT = 5000;
-app.listen(PORT, () => console.log(`🚀 App working on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Mobile Login App running on http://localhost:${PORT}`));
