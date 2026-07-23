@@ -3,169 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏪 Dukandar - EV Live Control & GPS Panel</title>
+    <title>⚡ EV Fleet Rider App</title>
+    <!-- Bootstrap 5 & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet OpenStreetMap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
-        .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .battery-badge { font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; }
-        #map { height: 320px; width: 100%; border-radius: 12px; border: 2px solid #ddd; }
+        body { background: #0f172a; color: #f8fafc; font-family: 'Segoe UI', sans-serif; padding-bottom: 30px; }
+        .app-card { max-width: 450px; margin: 15px auto; background: #1e293b; border-radius: 20px; padding: 20px; border: 1px solid #334155; }
+        .profile-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #38bdf8; }
+        .btn-yulu { background: #38bdf8; color: #0f172a; font-weight: bold; border-radius: 12px; padding: 12px; border: none; }
+        .btn-yulu:hover { background: #0284c7; color: #fff; }
+        .battery-box { width: 110px; height: 110px; border-radius: 50%; border: 5px solid #22c55e; display: flex; align-items: center; justify-content: center; margin: 0 auto; flex-direction: column; }
+        #riderMap { height: 200px; border-radius: 12px; border: 1px solid #475569; margin-top: 10px; }
+        .plan-card { background: #334155; border-radius: 12px; padding: 12px; border: 1px solid #475569; cursor: pointer; }
+        .plan-card:hover { border-color: #38bdf8; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <span class="navbar-brand fw-bold"><i class="fa-solid fa-store me-2"></i>Dukandar Live EV Tracker</span>
-            <button class="btn btn-outline-light btn-sm" onclick="fetchFleet()"><i class="fa-solid fa-rotate-right me-1"></i> Refresh</button>
+    <div class="app-card">
+        <!-- TOP HEADER & PROFILE -->
+        <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary">
+            <div class="d-flex align-items-center gap-2">
+                <button id="profileBtn" onclick="handleAuthAction()" class="btn btn-outline-info btn-sm rounded-pill">
+                    <i class="fa fa-user-circle"></i> Login
+                </button>
+            </div>
+            <span class="badge bg-success px-3 py-2"><i class="fa-solid fa-signal me-1"></i> Live App</span>
         </div>
-    </nav>
 
-    <div class="container-fluid my-4">
-        <div class="row g-4">
+        <h6 id="userNameDisplay" class="text-secondary small mb-3">Welcome, Guest! Kripya Login karein.</h6>
+
+        <!-- SECTION 1: KYC FORM (Aadhaar, PAN & Platform) -->
+        <div id="kycSection" class="bg-dark p-3 rounded-4 mb-4">
+            <h6 class="fw-bold text-info mb-2"><i class="fa-solid fa-id-card me-2"></i>Rider KYC & Registration</h6>
+            <p class="text-secondary style-small mb-3" style="font-size: 12px;">Data direct dukandar ke paas live bhej diya jayega.</p>
             
-            <!-- LEFT: ISSUE NEW BIKE FORM -->
-            <div class="col-md-4">
-                <div class="card card-custom p-4">
-                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-user-plus text-primary me-2"></i>Assign Bike & KYC</h5>
-                    
-                    <div class="mb-2"><label class="form-label small fw-bold">Rider Name</label><input type="text" id="rName" class="form-control" placeholder="Sachin Kumar"></div>
-                    <div class="mb-2"><label class="form-label small fw-bold">Phone Number</label><input type="tel" id="rPhone" class="form-control" placeholder="10 Digit Mobile"></div>
-                    <div class="mb-2"><label class="form-label small fw-bold">Aadhaar Number</label><input type="text" id="rAadhaar" class="form-control" placeholder="Aadhaar No."></div>
-                    <div class="mb-2"><label class="form-label small fw-bold">PAN Card</label><input type="text" id="rPan" class="form-control" placeholder="PAN No."></div>
-                    
-                    <div class="row g-2 mb-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold">Platform</label>
-                            <select id="rPlatform" class="form-select">
-                                <option>Blinkit</option>
-                                <option>Zepto</option>
-                                <option>Zomato</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold">Bike ID</label>
-                            <input type="text" id="rBikeId" class="form-control" placeholder="EV-101">
-                        </div>
+            <input type="tel" id="rPhone" class="form-control bg-dark text-white border-secondary mb-2" placeholder="Mobile Number (10 Digit)">
+            <input type="text" id="rAadhaar" class="form-control bg-dark text-white border-secondary mb-2" placeholder="Aadhaar Card Number">
+            <input type="text" id="rPan" class="form-control bg-dark text-white border-secondary mb-2" placeholder="PAN Card Number">
+            
+            <label class="small text-secondary fw-bold mb-1">Delivery Platform Select Karein:</label>
+            <select id="rPlatform" class="form-select bg-dark text-white border-secondary mb-3">
+                <option value="Blinkit">Blinkit Delivery</option>
+                <option value="Zepto">Zepto Delivery</option>
+                <option value="Zomato">Zomato / Swiggy</option>
+            </select>
+
+            <!-- SECTION 2: RENTAL PLANS -->
+            <label class="small text-secondary fw-bold mb-1">Rental Plan Select Karein:</label>
+            <div class="row g-2 mb-3">
+                <div class="col-6">
+                    <div class="plan-card text-center" onclick="selectPlan(7, 1200)">
+                        <span class="small fw-bold text-info">Weekly Plan</span>
+                        <div class="fw-bold">₹1,200 / 7 Days</div>
                     </div>
-
-                    <button onclick="assignBike()" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-key me-2"></i>Issue Bike Live</button>
                 </div>
-            </div>
-
-            <!-- RIGHT: LIVE MAP & FLEET TABLE -->
-            <div class="col-md-8">
-                <!-- LIVE GPS MAP -->
-                <div class="card card-custom p-3 mb-4">
-                    <h6 class="fw-bold mb-2"><i class="fa-solid fa-map-location-dot text-danger me-2"></i>Live GPS Fleet Map</h6>
-                    <div id="map"></div>
-                </div>
-
-                <!-- TABLE -->
-                <div class="card card-custom p-4">
-                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-bolt text-warning me-2"></i>Live Fleet Status</h6>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Bike ID</th>
-                                    <th>Battery %</th>
-                                    <th>Status</th>
-                                    <th>Active Rider & KYC</th>
-                                    <th>Days Left</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fleetTable"></tbody>
-                        </table>
+                <div class="col-6">
+                    <div class="plan-card text-center" onclick="selectPlan(30, 4200)">
+                        <span class="small fw-bold text-success">Monthly Plan</span>
+                        <div class="fw-bold">₹4,200 / 30 Days</div>
                     </div>
                 </div>
             </div>
 
+            <button onclick="submitRiderData()" class="btn btn-yulu w-100"><i class="fa-solid fa-paper-plane me-2"></i>Submit Details to Dukandar</button>
         </div>
+
+        <!-- SECTION 3: LIVE DASHBOARD (Battery & GPS Map) -->
+        <div id="dashboardSection" class="text-center" style="display:none;">
+            <!-- Live Battery Status -->
+            <div class="battery-box my-3">
+                <h3 class="mb-0 fw-bold text-success" id="liveBat">88%</h3>
+                <small class="text-secondary" style="font-size:10px;">⚡ LIVE BATTERY</small>
+            </div>
+            <h5 class="fw-bold mb-1" id="dispBikeId">Bike ID: EV-101</h5>
+            <span class="badge bg-primary mb-3" id="dispPlan">Weekly Plan Active</span>
+
+            <!-- Live Bike Location Map -->
+            <div class="text-start mb-3">
+                <label class="small text-secondary fw-bold mb-1"><i class="fa-solid fa-location-crosshairs text-danger me-1"></i> Live Bike GPS Location</label>
+                <div id="riderMap"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: CALL DUKANDAR & BOOK EV -->
+        <div class="bg-dark p-3 rounded-4 mb-3 text-center">
+            <h6 class="fw-bold text-warning mb-2"><i class="fa-solid fa-headset me-2"></i>Help & Support (Dukandar)</h6>
+            <p class="text-secondary mb-2" style="font-size: 12px;">Bike rental ya issue ke liye dukandar ko direct call karein:</p>
+            
+            <!-- Replace 7039600159 with your shop number -->
+            <a href="tel:7039600159" class="btn btn-success fw-bold w-100 rounded-pill py-2">
+                <i class="fa-solid fa-phone me-2"></i> Call Dukandar Now (7039600159)
+            </a>
+        </div>
+
     </div>
 
-    <!-- Leaflet JS -->
+    <!-- Leaflet JS (Map) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- FIREBASE GOOGLE LOGIN SCRIPT -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAn6ZbXchQxx5g93K0lCu5sULPBu-0jnFc",
+        authDomain: "zivio-5cb97.firebaseapp.com",
+        projectId: "zivio-5cb97",
+        storageBucket: "zivio-5cb97.firebasestorage.app",
+        messagingSenderId: "351667914716",
+        appId: "1:351667914716:web:18dc7bf983f20916703119"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      window.handleAuthAction = () => {
+        if (!auth.currentUser) {
+            signInWithPopup(auth, provider);
+        } else {
+            signOut(auth);
+        }
+      };
+
+      onAuthStateChanged(auth, (user) => {
+        const pBtn = document.getElementById('profileBtn');
+        const uDisplay = document.getElementById('userNameDisplay');
+        if (user) {
+            pBtn.innerHTML = `<img src="${user.photoURL}" class="profile-img"> Logout`;
+            uDisplay.innerText = "Hi, " + user.displayName + " (" + user.email + ")";
+            window.userGmailData = user;
+        } else {
+            pBtn.innerHTML = `<i class="fa fa-user-circle"></i> Login`;
+            uDisplay.innerText = "Welcome, Guest! Kripya Login karein.";
+            window.userGmailData = null;
+        }
+      });
+    </script>
+
     <script>
-        let map, markers = {};
+        let selectedDays = 7;
+        let map, marker;
 
-        function initMap() {
-            map = L.map('map').setView([19.0760, 72.8777], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
+        function selectPlan(days, price) {
+            selectedDays = days;
+            alert(days + ' Days Plan Select Ho Gaya Hai!');
         }
 
-        async function fetchFleet() {
-            const res = await fetch('/api/admin/fleet');
-            const data = await res.json();
-            
-            const tbody = document.getElementById('fleetTable');
-            tbody.innerHTML = '';
+        async function submitRiderData() {
+            if(!window.userGmailData) {
+                alert('Pehle top-left se Google Login karein!');
+                return;
+            }
 
-            data.fleet.forEach(item => {
-                const battClass = item.battery > 50 ? 'bg-success text-white' : (item.battery > 20 ? 'bg-warning text-dark' : 'bg-danger text-white');
-                
-                let riderInfo = '<span class="text-muted">Unassigned</span>';
-                let daysLeftBadge = '<span class="badge bg-secondary">N/A</span>';
+            const phone = document.getElementById('rPhone').value;
+            const aadhaar = document.getElementById('rAadhaar').value;
+            const pan = document.getElementById('rPan').value;
+            const platform = document.getElementById('rPlatform').value;
 
-                if(item.rider) {
-                    riderInfo = `
-                        <div><strong>${item.rider.name}</strong> (${item.rider.platform})</div>
-                        <div class="small text-muted">📱 ${item.rider.phone}</div>
-                        <div class="small text-secondary">Aadhaar: ${item.rider.aadhaar} | PAN: ${item.rider.pan}</div>
-                    `;
-                    const badgeColor = item.rider.daysLeft <= 2 ? 'bg-danger' : 'bg-primary';
-                    daysLeftBadge = `<span class="badge ${badgeColor}">${item.rider.daysLeft} Days</span>`;
-                }
+            if(!phone || !aadhaar) {
+                alert('Phone number aur Aadhaar details zaroori hain!');
+                return;
+            }
 
-                tbody.innerHTML += `
-                    <tr>
-                        <td><strong>${item.bikeId}</strong><br><small class="text-muted">${item.model}</small></td>
-                        <td><span class="battery-badge ${battClass}"><i class="fa-solid fa-battery-three-quarters me-1"></i>${item.battery}%</span></td>
-                        <td><span class="badge ${item.status === 'Rented' ? 'bg-info text-dark' : 'bg-success'}">${item.status}</span></td>
-                        <td>${riderInfo}</td>
-                        <td>${daysLeftBadge}</td>
-                    </tr>
-                `;
-
-                // Update Map Markers
-                if (markers[item.bikeId]) {
-                    markers[item.bikeId].setLatLng([item.lat, item.lng]);
-                } else {
-                    markers[item.bikeId] = L.marker([item.lat, item.lng]).addTo(map)
-                        .bindPopup(`<b>${item.bikeId}</b><br>Battery: ${item.battery}%<br>Rider: ${item.rider ? item.rider.name : 'None'}`);
-                }
-            });
-        }
-
-        async function assignBike() {
-            const payload = {
-                name: document.getElementById('rName').value,
-                phone: document.getElementById('rPhone').value,
-                aadhaar: document.getElementById('rAadhaar').value,
-                pan: document.getElementById('rPan').value,
-                platform: document.getElementById('rPlatform').value,
-                bikeId: document.getElementById('rBikeId').value,
-                planDays: 7
-            };
-
+            // Send KYC Data to Dukandar Admin Panel
             const res = await fetch('/api/admin/assign-bike', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    name: window.userGmailData.displayName,
+                    phone: phone,
+                    aadhaar: aadhaar,
+                    pan: pan,
+                    platform: platform,
+                    bikeId: 'EV-101',
+                    planDays: selectedDays
+                })
             });
+
             const result = await res.json();
-            alert(result.message);
-            if(result.success) fetchFleet();
+            if(result.success) {
+                alert('🎉 KYC & Plan Submitted! Data Dukandar Admin Panel par chala gaya hai.');
+                document.getElementById('kycSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                initRiderMap();
+            }
         }
 
-        initMap();
-        fetchFleet();
-        setInterval(fetchFleet, 5000); // Auto refresh every 5s
+        function initRiderMap() {
+            map = L.map('riderMap').setView([19.0760, 72.8777], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            marker = L.marker([19.0760, 72.8777]).addTo(map).bindPopup('Aapki Bike Yahan Hai!').openPopup();
+        }
     </script>
 </body>
 </html>
